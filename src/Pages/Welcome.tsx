@@ -1,8 +1,7 @@
-import React from "react";
-import image from './images/landing-page-img.jpg';
+import image from '../images/landing-page-img.jpg';
 import { Link } from "react-router-dom";
 
-const Home = () => {
+export const Welcome = () => {
     return (
         <div className='Home'>
             <header className="App-header">
@@ -18,5 +17,3 @@ const Home = () => {
         </div>
      );
 }
- 
-export default Home;
