@@ -1,3 +1,7 @@
+* {
+  font-family: "Roboto";
+}
+
 .Home {
   text-align: center;
 }
@@ -28,4 +32,18 @@
 
 .gold {
   color: goldenrod;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  max-width: 600px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 20px;
 }

@@ -1,4 +1,4 @@
-import image from '../images/landing-page-img.jpg';
+import image from '../Images/landing-page-img.jpg';
 import { Link } from "react-router-dom";
 
 export const Welcome = () => {

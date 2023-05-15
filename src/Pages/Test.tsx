@@ -1,9 +1,10 @@
-import { Counter } from "./Components/Counter";
-import Heading from "./Components/Heading";
-import { Section } from "./Components/Section";
-import { List } from "./Components/List";
+import { Counter } from "../Components/Counter";
+import Heading from "../Components/Heading";
+import { Section } from "../Components/Section";
+import { List } from "../Components/List";
 import { Snackbar } from '@mui/material';
 import { useState } from "react";
+import DenseTable from "../Components/Table";
 
 const Test = () => {
     const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
@@ -14,7 +15,12 @@ const Test = () => {
 
     return (
         <>
-            <Heading title="This is param" />
+            <div className="content">
+                <div className="container">
+                    <DenseTable />
+                </div>
+            </div>
+            {/* <Heading title="This is param" />
             <Section>This is some children</Section>
             <Counter></Counter>
             <List items={["test1", "test2", "test3"]} render={(item: string) => (<span className="gold">{item}</span>)}></List>
@@ -25,7 +31,7 @@ const Test = () => {
             autoHideDuration={6000}
             onClose={handleCloseSnackbar}
             message="This is a Snackbar message"
-            />
+            /> */}
 
         </>
     );

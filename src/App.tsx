@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './Pages/Home';
 import Login from './Pages/Login';
 import CreateAccount from './Pages/CreateAccount';
-import Test from './Test';
+import Test from './Pages/Test';
 import { Snackbar } from '@mui/material';
 import { Welcome } from './Pages/Welcome';
 
