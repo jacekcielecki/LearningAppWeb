@@ -5,6 +5,9 @@ import { List } from "../Components/List";
 import { Snackbar } from '@mui/material';
 import { useState } from "react";
 import DenseTable from "../Components/Table";
+import PermanentDrawerLeft from "../Components/NavBar"
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 const Test = () => {
     const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
@@ -15,11 +18,11 @@ const Test = () => {
 
     return (
         <>
-            <div className="content">
-                <div className="container">
-                    <DenseTable />
-                </div>
-            </div>
+            <Container maxWidth="xl">
+                {/* <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} /> */}
+                <DenseTable />
+            </Container>
+
             {/* <Heading title="This is param" />
             <Section>This is some children</Section>
             <Counter></Counter>
