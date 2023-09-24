@@ -1,3 +1,4 @@
-export class LoginDto {
-    constructor(login: string, password: string){}
+export interface LoginDto {
+    login: string,
+    password: string
 }
