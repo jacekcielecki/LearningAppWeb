@@ -1,13 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './Pages/Home/Home';
-import Login from './Pages/Login';
-import CreateAccount from './Pages/CreateAccount';
-import Test from './Pages/Test';
-import { Snackbar } from '@mui/material';
-import { Welcome } from './Pages/Welcome';
+import Login from './Pages/Login/Login';
 import PermanentDrawerLeft from './Components/NavBar';
 import Container from '@mui/material/Container/Container';
+import { Dashboard } from '@mui/icons-material';
 
 function App() {
   return (
@@ -17,10 +14,8 @@ function App() {
     <Container maxWidth="lg">
         <Routes>
         <Route path='/' element={<Home />}></Route>
-        <Route path="/welcome" element={<Welcome />}></Route>
-          <Route path='/create-account' element={<CreateAccount />}></Route>
           <Route path='/login' element={<Login />}></Route>
-          <Route path='/test' element={<Test />}></Route>
+          <Route path='/dashboard' element={<Dashboard />}></Route>
         </Routes>
         </Container>
       </div>
