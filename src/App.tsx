@@ -10,7 +10,7 @@ function App() {
   return (
   <Router>
     <Header />
-    <Box sx={{ my: 16, mx: 12, display: 'flex', justifyContent: 'center'}}> 
+    <Box sx={{ my: 16, mx: 12}}> 
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/login' element={<Login />}></Route>
