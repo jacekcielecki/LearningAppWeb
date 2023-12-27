@@ -15,7 +15,7 @@ import { Tooltip } from '@mui/material';
 import CreateCategoryModal from './CreateCategoryModal';
 import React from 'react';
 
-export const Home = () => {
+export const Dashboard = () => {
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [snackbarVisible, setSnackbarVisible] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState('');
