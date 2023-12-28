@@ -4,44 +4,85 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from "react";
-import { Login as login } from '../../Services/AccountService';
+import { login, register } from '../../Services/AccountService';
 import { LoginDto } from '../../Models/Account/LoginDto';
+import { CreateUserRequest } from '../../Models/Account/CreateUserRequest';
 
 export const Login = () => {
-    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [isRegisterMode, setIsRegisterMode] = useState<boolean>(true);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        const loginRequest : LoginDto = ({
-          email: email,
-          password: password
+        const loginRequest: LoginDto = ({
+            email: email,
+            password: password
         });
-    
+
         const accessToken = await login(loginRequest);
-        if(accessToken != null){
+        if (accessToken != null) {
             alert(accessToken);
         }
-        else{
+        else {
             alert('fail!');
         }
-      };
+    };
+
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const registerRequest: CreateUserRequest = ({
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword,
+            emailAddress: email,
+            profilePictureUrl: null
+        });
+        
+        await register(registerRequest);
+    };
+
+    const ToggleMode = () => {
+        setIsRegisterMode(!isRegisterMode);
+    }
+
 
     return (
         <div className='signin'>
             <form onSubmit={handleLogin}>
                 <Container component="main" maxWidth="xs">
-                    <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
-                        Sign in
-                    </Typography>
-                    <TextField onChange={(e) => setEmail(e.target.value)} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
-                    <TextField onChange={(e) => setPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password"/>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
-                        Sign In
-                    </Button>
-                    <Link href="#" variant="body2">
+                    {isRegisterMode ? (
+                            <>
+                            <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
+                                Create new account
+                            </Typography>
+                            <TextField onChange={(e) => setEmail(e.target.value)} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+                            <TextField onChange={(e) => setPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
+                                Sign In
+                            </Button>
+                        </>
+                    ) :
+                        (
+                            <>
+                                <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
+                                    Sign in
+                                </Typography>
+                                <TextField onChange={(e) => setUsername(e.target.value)} margin="normal" required fullWidth id="username" label="Username" name="username" autoComplete="username" autoFocus />
+                                <TextField onChange={(e) => setEmail(e.target.value)} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
+                                <TextField onChange={(e) => setPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+                                <TextField onChange={(e) => setConfirmPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+                                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
+                                    Sign In
+                                </Button>
+                            </>
+                        )
+                    }
+
+
+                    <Link variant="body2" onClick={ToggleMode}>
                         {"Don't have an account? Sign Up"}
                     </Link>
                 </Container>
