@@ -1,11 +1,10 @@
 import { CreateCategoryRequest } from '../Models/Category/CreateCategoryRequest';
 import { CategoryDto } from '../Models/Category/CategoryDto'
-
-const API_BASE_URL = 'https://localhost:7280/api';
+import config from '../config';
 
 export async function getCategories(): Promise<CategoryDto[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/Category`);
+    const response = await fetch(`${config.apiUrl}/Category`);
     if (!response.ok) {
       throw new Error('Failed to fetch categories');
     }
@@ -18,7 +17,7 @@ export async function getCategories(): Promise<CategoryDto[]> {
 
 export async function createCategory(dto : CreateCategoryRequest): Promise<CategoryDto> {
   try {
-    const response = await fetch(`${API_BASE_URL}/Category`,  {
+    const response = await fetch(`${config.apiUrl}/Category`,  {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(dto),
@@ -38,18 +37,15 @@ export async function createCategory(dto : CreateCategoryRequest): Promise<Categ
 
 export async function deleteCategory(id: number): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/Category/${id}`, {
+    const response = await fetch(`${config.apiUrl}/Category/${id}`, {
       method: 'DELETE',
     });
 
     if (!response.ok) {
       return false;
-      //throw new Error('Failed to delete category');
     }
   } catch (error) {
     return false;
-    //throw new Error(`Error deleting category: ${error.message}`);
   }
-
   return true;
 }
