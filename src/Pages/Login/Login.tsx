@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from "react";
 
-const SignIn = () => {
+export const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -69,5 +69,3 @@ const SignIn = () => {
         </div>
     );
 }
-
-export default SignIn;
