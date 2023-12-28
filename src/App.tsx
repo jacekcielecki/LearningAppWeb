@@ -2,10 +2,10 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
-import Header from './Components/Header';
+import Header from './Components/Layout/Header';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
 import Box from '@mui/material/Box';
-import Footer from './Components/Footer';
+import Footer from './Components/Layout/Footer';
 
 function App() {
   return (

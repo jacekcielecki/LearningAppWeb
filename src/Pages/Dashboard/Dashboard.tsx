@@ -1,4 +1,4 @@
-import { CategoryDto } from '../../Models/CategoryDto'
+import { CategoryDto } from '../../Models/Category/CategoryDto'
 import { useEffect, useState } from 'react';
 import { getCategories } from '../../Services/CategoryService';
 import { deleteCategory } from '../../Services/CategoryService';
@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper';
 import { Alert, Box, Button, IconButton, Snackbar } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Tooltip } from '@mui/material';
-import CreateCategoryModal from './CreateCategoryModal';
+import CreateCategoryModal from '../../Components/Modals/CreateCategoryModal';
 import React from 'react';
 
 export const Dashboard = () => {

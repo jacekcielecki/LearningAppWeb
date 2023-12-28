@@ -11,67 +11,6 @@
   font-family: "Roboto";
 }
 
-html {
-  /* background-color: var(--lap-white); */
-}
-
-#root {
-  /* background-color: var(--lap-white); */
-}
-
 .home-ilustration {
   max-width: 600px;
 }
-
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
-
-
-
-/* .Home .App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-
-.Home .App-link {
-  color: #61dafb;
-}
-
-.signin {
-  align-items: center;
-  margin-top: 25vh;
-}
-
-.gold {
-  color: goldenrod;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.content {
-  max-width: 600px;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding: 20px;
-} */

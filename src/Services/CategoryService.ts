@@ -1,5 +1,5 @@
 import { CreateCategoryRequest } from '../Models/Category/CreateCategoryRequest';
-import { CategoryDto } from '../Models/CategoryDto'
+import { CategoryDto } from '../Models/Category/CategoryDto'
 
 const API_BASE_URL = 'https://localhost:7280/api';
 
