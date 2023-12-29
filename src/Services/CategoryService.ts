@@ -15,23 +15,25 @@ export async function getCategories(): Promise<CategoryDto[]> {
   }
 }
 
-export async function createCategory(dto : CreateCategoryRequest): Promise<CategoryDto> {
+export async function createCategory(dto : CreateCategoryRequest): Promise<boolean> {
   try {
+    let accessToken = localStorage.getItem("token");
+    alert(accessToken);
     const response = await fetch(`${config.apiUrl}/Category`,  {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
       body: JSON.stringify(dto),
     });
     if (!response.ok) {
       throw new Error('Failed to create category');
     }
-    const category: CategoryDto = await response.json();
-    console.log('Created post:', category);
-
-    return category;
+    return true;
   } catch (error : any) {
-    console.log(error.message)
-    throw new Error(`Error creating category: ${error.message}`);
+    console.log(error.message);
+    return false;
   }
 }
 

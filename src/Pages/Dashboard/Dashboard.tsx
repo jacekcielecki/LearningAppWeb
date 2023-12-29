@@ -21,13 +21,13 @@ export const Dashboard = () => {
     const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
     useEffect(() => {
-        getData();
-    }, [handleDelete])
+          fetchCategories();
+    }, [])
 
-    async function getData() {
-        const categories = await getCategories();
-        setCategories(categories);
-    }
+    const fetchCategories = async () => {
+          const categories = await getCategories();
+          setCategories(categories);
+      };
 
     async function handleDelete(categoryId : number) {
         deleteCategory(categoryId);

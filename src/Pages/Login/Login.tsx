@@ -39,8 +39,8 @@ export const Login = () => {
         });
 
         const accessToken = await login(loginRequest);
-        if (accessToken != null) {
-            alert(accessToken);
+        if (accessToken !== "") {
+            localStorage.setItem("token", accessToken);
             navigateToDashboard();
         }
         else {

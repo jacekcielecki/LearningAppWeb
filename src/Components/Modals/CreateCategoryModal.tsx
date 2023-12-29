@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { createCategory } from '../../Services/CategoryService';
 import { Alert, Snackbar } from '@mui/material';
+import { CreateCategoryRequest } from '../../Models/Category/CreateCategoryRequest';
 
 export default function CreateCategoryModal() {
   const [open, setOpen] = React.useState(false);
@@ -16,12 +17,13 @@ export default function CreateCategoryModal() {
   const [description, setDescription] = React.useState('');
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
-  const handleSubmit = async () => {
-    const newCategory = ({
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newCategory : CreateCategoryRequest = ({
       name: name,
       description: description,
       iconUrl: '',
-      questionsPerLesson: 5,
+      questionsPerQuiz: 5,
       quizPerLevel: 5
     });
 
@@ -53,6 +55,7 @@ export default function CreateCategoryModal() {
             Create
         </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
+        <form onSubmit={handleSubmit}>
         <DialogTitle>Create category</DialogTitle>
         <DialogContent>
           <TextField autoFocus value={name} onChange={event => {setName(event.target.value);}} margin="dense" id="name" label="Name" type="text" fullWidth variant="standard"/>
@@ -60,8 +63,9 @@ export default function CreateCategoryModal() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {setOpen(false)}}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button type='submit'>Submit</Button>
         </DialogActions>
+        </form>
       </Dialog>
 
       <Snackbar open={snackbarVisible} autoHideDuration={6000} onClose={handleHideSnackbar}>

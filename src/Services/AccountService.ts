@@ -9,8 +9,11 @@ export async function login(dto: LoginDto) : Promise<string> {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dto),
         });
-        const data: string = await response.text();
-        return data;
+        if(!response.ok){
+            throw new Error('Failed to fetch access token');
+        }
+        const accessToken: string = await response.text();
+        return accessToken;
     } catch (error) {
         console.error(error);
         return "";
