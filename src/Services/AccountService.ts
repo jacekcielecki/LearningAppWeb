@@ -17,7 +17,7 @@ export async function login(dto: LoginDto) : Promise<string> {
     }
 }
 
-export async function register(request: CreateUserRequest) {
+export async function register(request: CreateUserRequest): Promise<boolean> {
     try {
         const response = await fetch(`${config.apiUrl}/Account/register`, {
             method: 'POST',
@@ -25,9 +25,11 @@ export async function register(request: CreateUserRequest) {
             body: JSON.stringify(request)
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch categories');
+            throw new Error('Failed to register new account');
           }
+        return true;
     } catch (error) {
         console.error(error)
+        return false;
     }
 }
