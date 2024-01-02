@@ -3,18 +3,16 @@ import Header from './Header';
 import Box from '@mui/material/Box/Box';
 import Footer from './Footer';
 
-const Layout: React.FC<{ children: ReactNode }> = ({children}) =>{
-    return(
-        <>
-            <Header/>
-            <main>
-                <Box sx={{ my: 16, mx: 12, minHeight: '58vh'}}> 
-                    {children}
-                </Box>
-            </main>
-            <Footer/>
-        </>
-    )
-}
+const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Header />
+      <main style={{ flex: 1 }}>
+        <Box sx={{ my: 16, mx: 12 }}>{children}</Box>
+      </main>
+      <Footer/>
+    </div>
+  );
+};
 
 export default Layout;
