@@ -38,9 +38,8 @@ export const Login = () => {
             password: password
         });
 
-        const accessToken = await login(loginRequest);
-        if (accessToken !== "") {
-            localStorage.setItem("token", accessToken);
+        const authSuccess = await login(loginRequest);
+        if (authSuccess) {
             navigateToDashboard();
         }
         else {
