@@ -14,10 +14,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Tooltip } from '@mui/material';
 import CreateCategoryModal from '../../Components/Modals/CreateCategoryModal';
 import React from 'react';
+import ConfirmationModal from '../../Components/Modals/ConfirmationModal';
 
 export const Dashboard = () => {
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [snackbarVisible, setSnackbarVisible] = React.useState<boolean>(false);
+    const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState<string>('');
 
     useEffect(() => {
@@ -30,11 +32,16 @@ export const Dashboard = () => {
       };
 
     async function handleDelete(categoryId : number) {
+        setConfirmationModalIsOpen(true);
         await deleteCategory(categoryId);
         setSnackbarMessage('Category deleted sucesfully!');
         setSnackbarVisible(true);
         fetchCategories();
     }
+
+    const handleCancel = () => {
+        setConfirmationModalIsOpen(false);
+      };
 
     const handleHideSnackbar = () => {
         setSnackbarVisible(false);
@@ -42,8 +49,10 @@ export const Dashboard = () => {
 
     return (
         <>
+            <ConfirmationModal isOpen={confirmationModalIsOpen} onCancel={handleCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
+
             <div>
-                <Box display="flex" justifyContent="space-between" sx={{ py: 1 }}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                     <h2>Categories</h2>
                     <div><CreateCategoryModal /></div>
                 </Box>
