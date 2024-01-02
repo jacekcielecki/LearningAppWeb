@@ -17,8 +17,8 @@ import React from 'react';
 
 export const Dashboard = () => {
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+    const [snackbarVisible, setSnackbarVisible] = React.useState<boolean>(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState<string>('');
 
     useEffect(() => {
           fetchCategories();
@@ -30,9 +30,10 @@ export const Dashboard = () => {
       };
 
     async function handleDelete(categoryId : number) {
-        deleteCategory(categoryId);
+        await deleteCategory(categoryId);
         setSnackbarMessage('Category deleted sucesfully!');
         setSnackbarVisible(true);
+        fetchCategories();
     }
 
     const handleHideSnackbar = () => {
