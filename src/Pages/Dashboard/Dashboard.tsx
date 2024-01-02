@@ -18,6 +18,7 @@ import ConfirmationModal from '../../Components/Modals/ConfirmationModal';
 
 export const Dashboard = () => {
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
+    const [categoryToDeleteId, setcategoryToDeleteId] = useState<number | null>(null);
     const [snackbarVisible, setSnackbarVisible] = React.useState<boolean>(false);
     const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState<string>('');
@@ -32,14 +33,22 @@ export const Dashboard = () => {
       };
 
     async function handleDelete(categoryId : number) {
+        setcategoryToDeleteId(categoryId);
         setConfirmationModalIsOpen(true);
-        await deleteCategory(categoryId);
-        setSnackbarMessage('Category deleted sucesfully!');
-        setSnackbarVisible(true);
-        fetchCategories();
     }
 
-    const handleCancel = () => {
+      const handleConfirmationDialogSubmit = async () => {
+        if(categoryToDeleteId !== null){
+            await deleteCategory(categoryToDeleteId);
+            setSnackbarMessage('Category deleted sucesfully!');
+            setSnackbarVisible(true);
+            fetchCategories();
+        }
+        setConfirmationModalIsOpen(false);
+      };
+
+      const handleConfirmationDialogCancel = () => {
+        setcategoryToDeleteId(null);
         setConfirmationModalIsOpen(false);
       };
 
@@ -49,7 +58,7 @@ export const Dashboard = () => {
 
     return (
         <>
-            <ConfirmationModal isOpen={confirmationModalIsOpen} onCancel={handleCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
+            <ConfirmationModal isOpen={confirmationModalIsOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
 
             <div>
                 <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>

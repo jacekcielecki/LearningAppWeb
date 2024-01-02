@@ -9,7 +9,8 @@ interface ConfirmationModalProps {
     header: string;
     content: string;
     isOpen: boolean;
-    onCancel: () => void;
+    onDialogCancel: () => void;
+    onDialogSubmit: () => void;
   }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = (props) => {
@@ -19,20 +20,24 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = (props) => {
         setIsOpen(props.isOpen);
       }, [props.isOpen]);
 
-    const handleCancel = () => {
-        props.onCancel(); 
+    const handleDialogSubmit = (isCanceled : boolean) => {
+        if(isCanceled){
+            props.onDialogCancel();
+        }else{
+            props.onDialogSubmit();
+        }
     };
 
     return (
         <div>
-            <Dialog open={isOpen} onClose={handleCancel} fullWidth={true} maxWidth='sm'>
+            <Dialog open={isOpen} onClose={() => handleDialogSubmit(true)} fullWidth={true} maxWidth='sm'>
             <DialogTitle>{props.header}</DialogTitle>
             <DialogContent>
                 {props.content}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCancel}>Cancel</Button>
-                <Button type='submit'>Submit</Button>
+                <Button onClick={() => handleDialogSubmit(true)}>Cancel</Button>
+                <Button onClick={() => handleDialogSubmit(false)}>Submit</Button>
             </DialogActions>
             </Dialog>
         </div>
