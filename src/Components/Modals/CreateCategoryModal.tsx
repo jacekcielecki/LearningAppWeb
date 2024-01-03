@@ -11,11 +11,14 @@ import { Alert, Snackbar } from '@mui/material';
 import { CreateCategoryRequest } from '../../Models/Category/CreateCategoryRequest';
 
 export default function CreateCategoryModal() {
+  const [snackbarState, setSnackbarState] = React.useState({
+    visible: false,
+    message: '',
+    severity: 'success'
+  });
   const [open, setOpen] = React.useState(false);
-  const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,13 +30,15 @@ export default function CreateCategoryModal() {
       quizPerLevel: 5
     });
 
-    const result = await createCategory(newCategory);
-    if(result !== null){
+    const createSuccess = await createCategory(newCategory);
+    if(createSuccess){
       setName('');
       setDescription('');
-      setSnackbarMessage("New category created succesfully!");
-      setSnackbarVisible(true);
+      setSnackbarState({...snackbarState, message: 'New category created succesfully!', visible: true, severity: 'success'});
+    }else{
+      setSnackbarState({...snackbarState, message: 'Something went wrong', visible: true, severity: 'danger'});
     }
+
     setOpen(false);
   };
 
@@ -46,7 +51,7 @@ export default function CreateCategoryModal() {
   };
 
   const handleHideSnackbar = () => {
-    setSnackbarVisible(false);
+    setSnackbarState({...snackbarState, visible: false});
   };
   
   return (
@@ -56,21 +61,21 @@ export default function CreateCategoryModal() {
         </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
         <form onSubmit={handleSubmit}>
-        <DialogTitle>Create category</DialogTitle>
-        <DialogContent>
-          <TextField autoFocus value={name} onChange={event => {setName(event.target.value);}} margin="dense" id="name" label="Name" type="text" fullWidth variant="standard"/>
-          <TextField value={description} onChange={event => {setDescription(event.target.value);}} margin="dense" id="description" label="Description" type="text" fullWidth variant="standard"/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => {setOpen(false)}}>Cancel</Button>
-          <Button type='submit'>Submit</Button>
-        </DialogActions>
+          <DialogTitle>Create category</DialogTitle>
+          <DialogContent>
+            <TextField autoFocus value={name} onChange={event => {setName(event.target.value);}} margin="dense" id="name" label="Name" type="text" fullWidth variant="standard"/>
+            <TextField value={description} onChange={event => {setDescription(event.target.value);}} margin="dense" id="description" label="Description" type="text" fullWidth variant="standard"/>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => {setOpen(false)}}>Cancel</Button>
+            <Button type='submit'>Submit</Button>
+          </DialogActions>
         </form>
       </Dialog>
 
-      <Snackbar open={snackbarVisible} autoHideDuration={6000} onClose={handleHideSnackbar}>
-        <Alert onClose={handleHideSnackbar} severity="success" sx={{ width: '100%' }}>
-          {snackbarMessage}
+      <Snackbar open={snackbarState.visible} autoHideDuration={2000} onClose={handleHideSnackbar} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+        <Alert onClose={handleHideSnackbar} variant="filled" severity="success" sx={{ width: '100%' }}>
+          {snackbarState.message}
         </Alert>
       </Snackbar>
     </div>
