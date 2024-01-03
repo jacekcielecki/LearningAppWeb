@@ -1,11 +1,29 @@
 
 class Http {
+  async get<T>(url: string): Promise<T> {
+    try {
+        let accessToken = localStorage.getItem("token");
+        const response = await fetch(url,  {
+          method: 'GET',
+          headers: {'Authorization': `Bearer ${accessToken}`}
+        });
+        if (!response.ok) {
+            throw new Error(`Error to GET data from ${url} with statusCode ${response.status}`);
+        }
+        const data: T = await response.json();
+        return data;
+    } catch (error : any) {
+        console.error(error);
+        throw error;
+    }
+}
+
     async getList<T>(url: string): Promise<T[]> {
         try {
             let accessToken = localStorage.getItem("token");
             const response = await fetch(url,  {
-            method: 'GET',
-            headers: {'Authorization': `Bearer ${accessToken}`}
+              method: 'GET',
+              headers: {'Authorization': `Bearer ${accessToken}`}
             });
             if (!response.ok) {
                 throw new Error(`Error to GET data from ${url} with statusCode ${response.status}`);
