@@ -16,9 +16,9 @@ export const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [isRegisterMode, setIsRegisterMode] = useState<boolean>(false);
 
-    const navigate = useNavigate(); 
     const navigateToDashboard = () =>{ 
-      navigate('/dashboard');
+        const navigate = useNavigate(); 
+        navigate('/dashboard');
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
