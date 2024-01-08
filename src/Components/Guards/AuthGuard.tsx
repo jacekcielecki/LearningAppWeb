@@ -13,7 +13,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token == null || token == "") {
       // Navigate the user to the "/" page
-      navigate('/');
+      navigate('/login');
     }
   }, []);
 

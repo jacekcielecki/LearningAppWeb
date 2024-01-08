@@ -10,6 +10,7 @@ import { CreateUserRequest } from '../../Models/Account/CreateUserRequest';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
+    const navigate = useNavigate(); 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -17,7 +18,6 @@ export const Login = () => {
     const [isRegisterMode, setIsRegisterMode] = useState<boolean>(false);
 
     const navigateToDashboard = () =>{ 
-        const navigate = useNavigate(); 
         navigate('/dashboard');
     }
 
