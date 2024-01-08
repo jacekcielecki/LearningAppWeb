@@ -7,6 +7,7 @@ import { Dashboard } from './Pages/Dashboard/Dashboard';
 import { useEffect, useState, createContext } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { getUser } from './Services/UserService';
+import AuthGuard from './Components/Guards/AuthGuard';
 
 export const UserContext = createContext<string>("");
 
@@ -33,10 +34,15 @@ function App() {
       <Router>
         <Layout>
           <Routes>
-              <Route path='/' element={<Home />}/>
-              <Route path='/login' element={<Login />}/>
-              <Route path='/dashboard' element={<Dashboard />}/>
+            <Route path='/' element={<Home />}/>
+            <Route path='/login' element={<Login />}/>
           </Routes>
+          <AuthGuard>
+            {/* Routes or components that require authentication */}
+            <Routes>
+              <Route path='/dashboard' element={<Dashboard />}/>
+            </Routes>
+          </AuthGuard>
         </Layout>
     </Router>
     </UserContext.Provider>
