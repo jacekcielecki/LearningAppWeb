@@ -7,18 +7,18 @@ interface AuthGuardProps {
 }
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if(authRoutes.includes(location.pathname)){
       /* Block not logged in users from accessing components that require authentication */
       const token = localStorage.getItem("token");
-      if (token == null || token == "") {
+      if (token === null || token === "") {
         navigate('/login');
       }
     }
-  }, []);
+  }, [location.pathname, navigate]);
 
   return <>{children}</>;
 };

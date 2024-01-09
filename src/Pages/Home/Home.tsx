@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Grid';
-import ilustrationUrl from '../../Images/home-ilustration.jpg';
-import * as React from 'react';
+import ilustrationUrl from '../../Assets/Images/home-ilustration.jpg';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +9,19 @@ export const Home = () => {
 
     const handleLoginRedirect = () => {
         const token = localStorage.getItem("token");
-        if(token != null && token != ""){
+        if(token !== null && token !== ""){
             navigate("/dashboard");
         }else{
             navigate("/login");
+        }
+    }
+
+    const handleRegisterRedirect = () => {
+        const token = localStorage.getItem("token");
+        if(token !== null && token !== ""){
+            navigate("/dashboard");
+        }else{
+            navigate("/register");
         }
     }
 
@@ -30,13 +38,13 @@ export const Home = () => {
                         </p>
                         <div>
                             <Button variant="contained" disableElevation onClick={handleLoginRedirect} sx={{mr: 3, backgroundColor: 'var(--lap-orange)'}}>Login</Button>
-                            <Button variant="contained" disableElevation onClick={handleLoginRedirect} sx={{backgroundColor: 'var(--lap-navy-blue)'}}>Register</Button>
+                            <Button variant="contained" disableElevation onClick={handleRegisterRedirect} sx={{backgroundColor: 'var(--lap-navy-blue)'}}>Register</Button>
                         </div>
                     </Box>
                 </Grid>
                 <Grid item xs={6} sx={{display: 'flex', justifyContent: 'center'}}>
                     <div>
-                        <img src={ilustrationUrl} className='home-ilustration' alt='image'></img>
+                        <img src={ilustrationUrl} className='home-ilustration' alt=''/>
                     </div>
                 </Grid>
             </Grid>

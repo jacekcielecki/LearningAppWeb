@@ -1,6 +1,7 @@
 export const routes = [
     '/',
-    '/login'
+    '/login',
+    '/register'
   ];
 
 export const authRoutes = [

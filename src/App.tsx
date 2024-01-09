@@ -16,7 +16,7 @@ function App() {
 
   const setContexts = async () => {
     const token = localStorage.getItem('token');
-    if(token != null && token != ''){
+    if(token !== null && token !== ''){
       const decodedToken = jwtDecode(token);
       if(decodedToken.jti != null){
         const user = await getUser(parseInt(decodedToken.jti));
@@ -37,6 +37,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/login' element={<Login />}/>
+              <Route path='/register' element={<Login />}/>
               <Route path='/dashboard' element={<Dashboard />}/>
             </Routes>
           </AuthGuard>
