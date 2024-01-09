@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { authRoutes } from '../../routes';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -7,13 +8,15 @@ interface AuthGuardProps {
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   let navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    //Check if token is null or expired
-    const token = localStorage.getItem("token");
-    if (token == null || token == "") {
-      // Navigate the user to the "/" page
-      navigate('/login');
+    if(authRoutes.includes(location.pathname)){
+      {/* Routes or components that require authentication */}
+      const token = localStorage.getItem("token");
+      if (token == null || token == "") {
+        navigate('/login');
+      }
     }
   }, []);
 

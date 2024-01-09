@@ -33,18 +33,15 @@ function App() {
     <UserContext.Provider value={userContext}>
       <Router>
         <Layout>
-          <Routes>
-            <Route path='/' element={<Home />}/>
-            <Route path='/login' element={<Login />}/>
-          </Routes>
           <AuthGuard>
-            {/* Routes or components that require authentication */}
             <Routes>
+              <Route path='/' element={<Home />}/>
+              <Route path='/login' element={<Login />}/>
               <Route path='/dashboard' element={<Dashboard />}/>
             </Routes>
           </AuthGuard>
         </Layout>
-    </Router>
+      </Router>
     </UserContext.Provider>
   );
 }
