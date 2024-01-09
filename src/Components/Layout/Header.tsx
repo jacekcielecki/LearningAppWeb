@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from '../../App';
 import UserMenu from './UserMenu';
+import UserAvatar from './UserAvatar';
 
 export default function Header() {
   let navigate = useNavigate(); 
@@ -28,6 +29,7 @@ export default function Header() {
             <Typography variant="body1" noWrap component="div" sx={{cursor: 'pointer'}}>
               {userEmail}
             </Typography>
+            <UserAvatar/>
             <UserMenu/>
           </div>
         </Toolbar>
