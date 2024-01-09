@@ -3,8 +3,20 @@ import ilustrationUrl from '../../Images/home-ilustration.jpg';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
+    let navigate = useNavigate();
+
+    const handleLoginRedirect = () => {
+        const token = localStorage.getItem("token");
+        if(token != null && token != ""){
+            navigate("/dashboard");
+        }else{
+            navigate("/login");
+        }
+    }
+
     return (
         <> 
             <Grid container spacing={2} sx={{width: 'fit-content', alignItems: 'center', display: 'flex', justifyContent: 'center'}}>
@@ -17,8 +29,8 @@ export const Home = () => {
                             or join other course creators and create your own learning course tailored for any subject of your choosing.
                         </p>
                         <div>
-                            <Button variant="contained" disableElevation href="/login" sx={{mr: 3, backgroundColor: 'var(--lap-orange)'}}>Login</Button>
-                            <Button variant="contained" disableElevation href="/login" sx={{backgroundColor: 'var(--lap-navy-blue)'}}>Register</Button>
+                            <Button variant="contained" disableElevation onClick={handleLoginRedirect} sx={{mr: 3, backgroundColor: 'var(--lap-orange)'}}>Login</Button>
+                            <Button variant="contained" disableElevation onClick={handleLoginRedirect} sx={{backgroundColor: 'var(--lap-navy-blue)'}}>Register</Button>
                         </div>
                     </Box>
                 </Grid>
