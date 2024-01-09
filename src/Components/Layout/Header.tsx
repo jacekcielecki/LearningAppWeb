@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from '../../App';
+import UserMenu from './UserMenu';
 
 export default function Header() {
   let navigate = useNavigate(); 
@@ -23,9 +24,12 @@ export default function Header() {
           <Typography variant="h6" noWrap component="div" onClick={navigateHome} sx={{cursor: 'pointer', marginRight: '5'}}>
             LearningApp
           </Typography>
-          <Typography variant="body1" noWrap component="div" onClick={navigateHome} sx={{cursor: 'pointer'}}>
-            {userEmail}
-          </Typography>
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <Typography variant="body1" noWrap component="div" sx={{cursor: 'pointer'}}>
+              {userEmail}
+            </Typography>
+            <UserMenu/>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>
