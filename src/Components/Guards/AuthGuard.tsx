@@ -12,7 +12,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   useEffect(() => {
     if(authRoutes.includes(location.pathname)){
-      {/* Routes or components that require authentication */}
+      /* Block not logged in users from accessing components that require authentication */
       const token = localStorage.getItem("token");
       if (token == null || token == "") {
         navigate('/login');

@@ -5,13 +5,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from '../../App';
 import UserMenu from './UserMenu';
 import UserAvatar from './UserAvatar';
+import UserContext from '../../Contexts/UserContext';
 
 export default function Header() {
   let navigate = useNavigate(); 
-  const userEmail = useContext(UserContext);
+  const user = useContext(UserContext);
 
   const navigateHome = () =>{ 
     navigate('/');
@@ -27,7 +27,7 @@ export default function Header() {
           </Typography>
           <div style={{display: 'flex', alignItems: 'center'}}>
             <Typography variant="body1" noWrap component="div" sx={{cursor: 'pointer'}}>
-              {userEmail}
+              {user?.emailAddress}
             </Typography>
             <UserAvatar/>
             <UserMenu/>

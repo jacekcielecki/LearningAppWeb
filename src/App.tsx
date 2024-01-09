@@ -4,15 +4,15 @@ import Layout from './Components/Layout/Layout';
 import { Home } from './Pages/Home/Home';
 import { Login } from './Pages/Login/Login';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { getUser } from './Services/UserService';
 import AuthGuard from './Components/Guards/AuthGuard';
-
-export const UserContext = createContext<string>("");
+import UserContext from './Contexts/UserContext';
+import { UserDto } from './Models/User/UserDto';
 
 function App() {
-  const [userContext, setUserContext] = useState<string>("");
+  const [userContext, setUserContext] = useState<UserDto | null>(null);
 
   const setContexts = async () => {
     const token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ function App() {
       const decodedToken = jwtDecode(token);
       if(decodedToken.jti != null){
         const user = await getUser(parseInt(decodedToken.jti));
-        setUserContext(user.emailAddress);
+        setUserContext(user);
       }
     }
   };
