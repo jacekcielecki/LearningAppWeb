@@ -56,7 +56,7 @@ export default function CreateCategoryModal() {
   
   return (
     <div>
-      <Button variant="contained" size='small' startIcon={<AddIcon />} onClick={handleClickOpen}>
+      <Button variant="contained" className='btn-orange' size='medium' startIcon={<AddIcon />} onClick={handleClickOpen}>
             Create
         </Button>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
