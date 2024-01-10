@@ -12,58 +12,86 @@ import Paper from '@mui/material/Paper';
 import { Alert, Box, Button, IconButton, Snackbar } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Tooltip } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import CreateCategoryModal from '../../Components/Modals/CreateCategoryModal';
 import React from 'react';
 import ConfirmationModal from '../../Components/Modals/ConfirmationModal';
 
 export const Dashboard = () => {
+    const [snackbar, setSnackbar] = React.useState({
+        visible: false,
+        message: '',
+        severity: 'success'
+      });
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [categoryToDeleteId, setcategoryToDeleteId] = useState<number | null>(null);
-    const [snackbarVisible, setSnackbarVisible] = React.useState<boolean>(false);
     const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
-    const [snackbarMessage, setSnackbarMessage] = React.useState<string>('');
+    const [createCategoryModalIsOpen, setCreateCategoryModalIsOpen] = React.useState<boolean>(false);
 
     useEffect(() => {
-          fetchCategories();
+        fetchCategories();
     }, [])
 
     const fetchCategories = async () => {
-          const categories = await getCategories();
-          setCategories(categories);
-      };
+        const categories = await getCategories();
+        setCategories(categories);
+    };
 
     async function handleDelete(categoryId : number) {
         setcategoryToDeleteId(categoryId);
         setConfirmationModalIsOpen(true);
     }
 
-      const handleConfirmationDialogSubmit = async () => {
+    const handleConfirmationDialogSubmit = async () => {
         if(categoryToDeleteId !== null){
             await deleteCategory(categoryToDeleteId);
-            setSnackbarMessage('Category deleted sucesfully!');
-            setSnackbarVisible(true);
+            setSnackbar({...snackbar, message: 'Category deleted sucesfully', visible: true, severity: 'success'});
             fetchCategories();
         }
         setConfirmationModalIsOpen(false);
-      };
+    };
 
-      const handleConfirmationDialogCancel = () => {
+    const handleConfirmationDialogCancel = () => {
         setcategoryToDeleteId(null);
         setConfirmationModalIsOpen(false);
-      };
+    };
+
+    const handleCreateCategoryModalSubmit = () => {
+        setCreateCategoryModalIsOpen(false);
+        setSnackbar({...snackbar, visible: true, message: 'New category created succesfully', severity: 'success'});
+    };
+
+    const handleCreateCategoryModalCancel = () => {
+        setCreateCategoryModalIsOpen(false);
+    };
 
     const handleHideSnackbar = () => {
-        setSnackbarVisible(false);
-      };
+        setSnackbar({...snackbar, visible: false});
+    };
+
+    const handleOpenCreateCategoryModal = () => {
+        setCreateCategoryModalIsOpen(true);
+    };
 
     return (
         <>
+            <CreateCategoryModal isOpen={createCategoryModalIsOpen} onDialogSubmit={handleCreateCategoryModalSubmit} onDialogCancel={handleCreateCategoryModalCancel} />
             <ConfirmationModal isOpen={confirmationModalIsOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
+
+            <Snackbar open={snackbar.visible} autoHideDuration={2000} onClose={handleHideSnackbar} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+                <Alert onClose={handleHideSnackbar} variant="filled" severity="success" sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
 
             <div>
                 <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                     <h2>Categories</h2>
-                    <div><CreateCategoryModal /></div>
+                    <div>
+                        <Button variant="contained" className='btn-orange' size='medium' startIcon={<AddIcon />} onClick={handleOpenCreateCategoryModal}>
+                            Create
+                        </Button>
+                    </div>
                 </Box>
             </div>
             <TableContainer component={Paper} >
@@ -94,12 +122,6 @@ export const Dashboard = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
-            <Snackbar open={snackbarVisible} autoHideDuration={6000} onClose={handleHideSnackbar}>
-                <Alert onClose={handleHideSnackbar} severity="success" sx={{ width: '100%' }}>
-                {snackbarMessage}
-                </Alert>
-            </Snackbar>
         </>
     );
 }

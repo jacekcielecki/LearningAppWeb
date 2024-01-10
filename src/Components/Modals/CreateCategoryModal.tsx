@@ -1,22 +1,21 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddIcon from '@mui/icons-material/Add';
 import { createCategory } from '../../Services/CategoryService';
-import { Alert, Snackbar } from '@mui/material';
 import { CreateCategoryRequest } from '../../Models/Category/CreateCategoryRequest';
 
-export default function CreateCategoryModal() {
-  const [snackbarState, setSnackbarState] = React.useState({
-    visible: false,
-    message: '',
-    severity: 'success'
-  });
-  const [open, setOpen] = React.useState(false);
+interface CreateCategoryModalProps {
+  isOpen: boolean;
+  onDialogCancel: () => void;
+  onDialogSubmit: () => void;
+}
+
+const CreateCategoryModal : React.FC<CreateCategoryModalProps> = (props) => {
+  const [open, setOpen] = React.useState(props.isOpen);
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
 
@@ -32,33 +31,22 @@ export default function CreateCategoryModal() {
 
     const createSuccess = await createCategory(newCategory);
     if(createSuccess){
-      setName('');
-      setDescription('');
-      setSnackbarState({...snackbarState, message: 'New category created succesfully!', visible: true, severity: 'success'});
+      props.onDialogSubmit();
     }else{
-      setSnackbarState({...snackbarState, message: 'Something went wrong', visible: true, severity: 'danger'});
+      props.onDialogCancel();
     }
-
-    setOpen(false);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    props.onDialogCancel();
   };
 
-  const handleHideSnackbar = () => {
-    setSnackbarState({...snackbarState, visible: false});
-  };
+  React.useEffect(() => {
+    setOpen(props.isOpen);
+  }, [props.isOpen]);
   
   return (
-    <div>
-      <Button variant="contained" className='btn-orange' size='medium' startIcon={<AddIcon />} onClick={handleClickOpen}>
-            Create
-        </Button>
+    <>
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
         <form onSubmit={handleSubmit}>
           <DialogTitle>Create category</DialogTitle>
@@ -67,17 +55,13 @@ export default function CreateCategoryModal() {
             <TextField value={description} onChange={event => {setDescription(event.target.value);}} margin="dense" id="description" label="Description" type="text" fullWidth variant="standard"/>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {setOpen(false)}}>Cancel</Button>
+            <Button onClick={handleClose}>Cancel</Button>
             <Button type='submit'>Submit</Button>
           </DialogActions>
         </form>
       </Dialog>
-
-      <Snackbar open={snackbarState.visible} autoHideDuration={2000} onClose={handleHideSnackbar} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-        <Alert onClose={handleHideSnackbar} variant="filled" severity="success" sx={{ width: '100%' }}>
-          {snackbarState.message}
-        </Alert>
-      </Snackbar>
-    </div>
+    </>
   );
 }
+
+export default CreateCategoryModal;

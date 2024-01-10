@@ -31,14 +31,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = (props) => {
     return (
         <div>
             <Dialog open={isOpen} onClose={() => handleDialogSubmit(true)} fullWidth={true} maxWidth='sm'>
-            <DialogTitle>{props.header}</DialogTitle>
-            <DialogContent>
-                {props.content}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => handleDialogSubmit(true)}>Cancel</Button>
-                <Button onClick={() => handleDialogSubmit(false)}>Submit</Button>
-            </DialogActions>
+                <DialogTitle>{props.header}</DialogTitle>
+                <DialogContent>
+                    {props.content}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => handleDialogSubmit(true)}>Cancel</Button>
+                    <Button onClick={() => handleDialogSubmit(false)}>Submit</Button>
+                </DialogActions>
             </Dialog>
         </div>
     );
