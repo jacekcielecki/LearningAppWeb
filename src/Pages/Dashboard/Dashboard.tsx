@@ -88,7 +88,7 @@ export const Dashboard = () => {
                 <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                     <h2>Categories</h2>
                     <div>
-                        <Button variant="contained" className='btn-orange' size='medium' startIcon={<AddIcon />} onClick={handleOpenCreateCategoryModal}>
+                        <Button variant="contained" color='secondary' size='medium' startIcon={<AddIcon />} onClick={handleOpenCreateCategoryModal}>
                             Create
                         </Button>
                     </div>

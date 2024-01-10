@@ -38,8 +38,8 @@ export const Home = () => {
                             or join other course creators and create your own learning course tailored for any subject of your choosing.
                         </p>
                         <div>
-                            <Button variant="contained" size='medium' disableElevation onClick={handleLoginRedirect} className='btn-orange' sx={{mr: 3}}>Login</Button>
-                            <Button variant="contained" size='medium' disableElevation onClick={handleRegisterRedirect} className='btn-navy-blue'>Register</Button>
+                            <Button variant="contained" size='medium' disableElevation onClick={handleLoginRedirect} color='secondary' sx={{mr: 3}}>Login</Button>
+                            <Button variant="contained" size='medium' disableElevation onClick={handleRegisterRedirect} color='primary'>Register</Button>
                         </div>
                     </Box>
                 </Grid>
