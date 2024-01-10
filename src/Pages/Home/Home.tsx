@@ -28,7 +28,7 @@ export const Home = () => {
 
     return (
         <> 
-            <Grid container spacing={2} sx={{width: 'fit-content', alignItems: 'center', display: 'flex', justifyContent: 'center'}}>
+            <Grid container spacing={2} sx={{backgroundColor: 'red', width: 'fit-content', alignItems: 'center', display: 'flex', justifyContent: 'center', mt: 4}}>
                 <Grid item xs={6}>
                     <Box sx={{textAlign: 'left'}}>
                         <h3 style={{marginBottom: -20}}>Welcome to</h3>
