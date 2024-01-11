@@ -3,7 +3,6 @@ import ilustrationUrl from '../../Assets/Images/home-ilustration.jpg';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import { grey } from '@mui/material/colors';
 
 export const Home = () => {
     let navigate = useNavigate();
