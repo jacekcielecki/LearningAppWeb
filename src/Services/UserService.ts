@@ -2,14 +2,15 @@ import { UserDto } from "../Models/User/UserDto";
 import config from "../config";
 import Http from "./Http";
 
-export async function getUsers(): Promise<UserDto[]> {
-    const http = new Http();
-    const response = await http.get<UserDto[]>(`${config.apiUrl}/User`);
+const UserService = {
+  async GetAll(): Promise<UserDto[]> {
+    const response = await Http.get<UserDto[]>(`${config.apiUrl}/User`);
+    return response;
+  },
+  async GetById(id: number): Promise<UserDto> {
+    const response = await Http.get<UserDto>(`${config.apiUrl}/User/${id}`);
     return response;
   }
+};
 
-  export async function getUser(id: number): Promise<UserDto> {
-    const http = new Http();
-    const response = await http.get<UserDto>(`${config.apiUrl}/User/${id}`);
-    return response;
-  }
+export default UserService;

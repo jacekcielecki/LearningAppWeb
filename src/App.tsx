@@ -6,12 +6,12 @@ import { Login } from './Pages/Login/Login';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode";
-import { getUser } from './Services/UserService';
 import AuthGuard from './Components/Guards/AuthGuard';
 import UserContext from './Contexts/UserContext';
 import { UserDto } from './Models/User/UserDto';
 import { ThemeContext } from '@emotion/react';
 import LearningAppTheme from './theme';
+import UserService from './Services/UserService';
 
 function App() {
   const [userContext, setUserContext] = useState<UserDto | null>(null);
@@ -21,7 +21,7 @@ function App() {
     if(token !== null && token !== ''){
       const decodedToken = jwtDecode(token);
       if(decodedToken.jti != null){
-        const user = await getUser(parseInt(decodedToken.jti));
+        const user = await UserService.GetById(parseInt(decodedToken.jti));
         setUserContext(user);
       }
     }

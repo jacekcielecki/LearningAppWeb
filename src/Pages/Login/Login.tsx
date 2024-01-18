@@ -4,10 +4,10 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from "react";
-import { login, register } from '../../Services/AccountService';
 import { LoginDto } from '../../Models/Account/LoginDto';
 import { CreateUserRequest } from '../../Models/Account/CreateUserRequest';
 import { useNavigate } from 'react-router-dom';
+import AccountService from '../../Services/AccountService';
 
 export const Login = () => {
     const navigate = useNavigate(); 
@@ -38,7 +38,7 @@ export const Login = () => {
             password: password
         });
 
-        const authSuccess = await login(loginRequest);
+        const authSuccess = await AccountService.Login(loginRequest);
         if (authSuccess) {
             navigateToDashboard();
         }
@@ -57,9 +57,9 @@ export const Login = () => {
             profilePictureUrl: null
         });
         
-        var isSuccess = await register(registerRequest);
+        var registerSuccess = await AccountService.Register(registerRequest);
 
-        if (isSuccess) {
+        if (registerSuccess) {
             navigateToDashboard()
         }else{
             setUsername('');

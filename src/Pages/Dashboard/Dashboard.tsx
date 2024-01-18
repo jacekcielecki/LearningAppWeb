@@ -1,7 +1,5 @@
 import { CategoryDto } from '../../Models/Category/CategoryDto'
 import { useEffect, useState } from 'react';
-import { getCategories } from '../../Services/CategoryService';
-import { deleteCategory } from '../../Services/CategoryService';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CreateCategoryModal from '../../Components/Modals/CreateCategoryModal';
 import React from 'react';
 import ConfirmationModal from '../../Components/Modals/ConfirmationModal';
+import CategoryService from '../../Services/CategoryService';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({
@@ -33,7 +32,7 @@ export const Dashboard = () => {
     }, [])
 
     const fetchCategories = async () => {
-        const categories = await getCategories();
+        const categories = await CategoryService.GetAll();
         setCategories(categories);
     };
 
@@ -44,7 +43,7 @@ export const Dashboard = () => {
 
     const handleConfirmationDialogSubmit = async () => {
         if(categoryToDeleteId !== null){
-            await deleteCategory(categoryToDeleteId);
+            await CategoryService.Delete(categoryToDeleteId);
             setSnackbar({...snackbar, message: 'Category deleted sucesfully', visible: true, severity: 'success'});
             fetchCategories();
         }

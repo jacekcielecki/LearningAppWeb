@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createCategory } from '../../Services/CategoryService';
+import CategoryService from '../../Services/CategoryService';
 import { CreateCategoryRequest } from '../../Models/Category/CreateCategoryRequest';
 
 interface CreateCategoryModalProps {
@@ -35,7 +35,7 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = (props) => {
       // Do not submit if there is a validation error
       return;
     }
-    const createSuccess = await createCategory(category);
+    const createSuccess = await CategoryService.Create(category);
     if (createSuccess) {
       props.onDialogSubmit();
     } else {
