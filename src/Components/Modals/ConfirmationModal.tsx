@@ -9,8 +9,8 @@ interface ConfirmationModalProps {
     header: string;
     content: string;
     isOpen: boolean;
-    onDialogCancel: () => void;
-    onDialogSubmit: () => void;
+    onDialogCancel: (...args: any[]) => any;
+    onDialogSubmit: (...args: any[]) => any;
   }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = (props) => {

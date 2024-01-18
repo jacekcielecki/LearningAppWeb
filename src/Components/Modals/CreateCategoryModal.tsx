@@ -15,7 +15,7 @@ interface CreateCategoryModalProps {
 }
 
 const CATEGORY_NAME_MAX_LENGTH = 20;
-const CATEGORY_DESCRIPTION_MAX_LENGTH = 10;
+const CATEGORY_DESCRIPTION_MAX_LENGTH = 100;
 
 const CreateCategoryModal: React.FC<CreateCategoryModalProps> = (props) => {
   const [category, setCategory] = useState<CreateCategoryRequest>({

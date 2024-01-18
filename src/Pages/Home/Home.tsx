@@ -3,9 +3,12 @@ import ilustrationUrl from '../../Assets/Images/home-ilustration.jpg';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import CookieConsentModal from '../../Components/Modals/CookieConsentModal';
+import { useState } from 'react';
 
 export const Home = () => {
     let navigate = useNavigate();
+    const [showCookiesConsentModal, setShowCookiesConsentModal] = useState(true);
 
     const handleLoginRedirect = () => {
         const token = localStorage.getItem("token");
@@ -25,8 +28,18 @@ export const Home = () => {
         }
     }
 
+    const handleCookiesAccept = () => {
+        setShowCookiesConsentModal(false);
+    }
+
+    const handleCookiesReject = () => {
+        setShowCookiesConsentModal(false);
+    }
+
     return (
         <> 
+            <CookieConsentModal isOpen={showCookiesConsentModal} onCookiesAccepted={handleCookiesAccept} onCookiesRejected={handleCookiesReject}/>
+
             <Grid container spacing={2} sx={{width: 'fit-content', alignItems: 'center', display: 'flex', justifyContent: 'center', mt: 4}}>
                 <Grid item xs={6}>
                     <Box sx={{textAlign: 'left'}}>
