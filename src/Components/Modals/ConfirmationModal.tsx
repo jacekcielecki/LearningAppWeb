@@ -36,8 +36,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = (props) => {
                     {props.content}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleDialogSubmit(true)}>Cancel</Button>
-                    <Button onClick={() => handleDialogSubmit(false)}>Submit</Button>
+                    <Button disableElevation onClick={() => handleDialogSubmit(true)}>Cancel</Button>
+                    <Button disableElevation onClick={() => handleDialogSubmit(false)}>Submit</Button>
                 </DialogActions>
             </Dialog>
         </div>
