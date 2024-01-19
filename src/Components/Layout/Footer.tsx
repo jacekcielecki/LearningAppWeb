@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import config from '../../config';
 
 export default function Footer(){
-  const [cookies, setCookies] = useCookies(["cookiesConsent"]);
+  const [cookies] = useCookies(["cookiesConsent"]);
   const [isCookiesConsentModalVisible, setIsCookiesConsentModalVisible] = useState(false);
 
   const handleCookiesAccept = () => {
@@ -25,7 +25,7 @@ export default function Footer(){
   useEffect(() => {
     const consentNotSpecified = cookies.cookiesConsent !== true && cookies.cookiesConsent !== false;
     setIsCookiesConsentModalVisible(consentNotSpecified);
-  }, []);
+  }, [cookies.cookiesConsent]);
   
   return (
     <>

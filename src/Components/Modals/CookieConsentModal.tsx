@@ -18,7 +18,7 @@ const CookieConsentModal: React.FC<CookieConsentModalProps> = (props) => {
 
     useEffect(() => {
         setIsOpen(props.isOpen);
-      }, [props.isOpen]);
+      }, [props.isOpen, cookiesConsent]);
 
     const handleDialogSubmit = (isRejected : boolean) => {
         if(isRejected){

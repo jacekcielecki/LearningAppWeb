@@ -3,24 +3,25 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import AccountService from '../../Services/AccountService';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import { useEffect, useState } from "react";
 import { LoginDto } from '../../Models/Account/LoginDto';
 import { CreateUserRequest } from '../../Models/Account/CreateUserRequest';
 import { useLocation, useNavigate } from 'react-router-dom';
-import AccountService from '../../Services/AccountService';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
-export const Login = () => {
+const Login = () => {
     const location = useLocation();
     const navigate = useNavigate(); 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading] = useState(false);
     const [isRegisterMode, setIsRegisterMode] = useState(false);
-
-
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
+    const [user, setUser] = useState<CreateUserRequest>({
+        username: '',
+        password: '',
+        confirmPassword: '',
+        emailAddress: '',
+        profilePictureUrl: ''
+    });
 
     const navigateToDashboard = () =>{ 
         navigate('/dashboard');
@@ -29,56 +30,32 @@ export const Login = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         isRegisterMode ? await handleRegister(e) : await handleLogin(e);
-    };
+    }
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const loginRequest: LoginDto = ({
-            email: email,
-            password: password
+            email: user.emailAddress,
+            password: user.password
         });
-
         const authSuccess = await AccountService.Login(loginRequest);
-        if (authSuccess) {
-            navigateToDashboard();
-        }
-        else {
-            alert('fail!');
-        }
-    };
+        authSuccess ? navigateToDashboard() :
+        setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+    }
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const registerRequest: CreateUserRequest = ({
-            username: username,
-            password: password,
-            confirmPassword: confirmPassword,
-            emailAddress: email,
-            profilePictureUrl: null
-        });
-        
-        var registerSuccess = await AccountService.Register(registerRequest);
-
-        if (registerSuccess) {
-            navigateToDashboard()
-        }else{
-            setUsername('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-        }
+        const registerSuccess = await AccountService.Register(user);
+        registerSuccess ? navigateToDashboard() : 
+        setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
     };
 
     const ToggleMode = () => {
-        location.pathname == '/register' ?
-            navigate('/login') :
-            navigate('/register');
+        location.pathname === '/register' ? navigate('/login') : navigate('/register');
     }
 
     useEffect(() => {
-        location.pathname == '/register' ?
-            setIsRegisterMode(true) :
-            setIsRegisterMode(false);
+        location.pathname === '/register' ? setIsRegisterMode(true) : setIsRegisterMode(false);
     }, [location.pathname]);
 
     return (
@@ -96,14 +73,14 @@ export const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <Container component="main" maxWidth="xs">
                             {isRegisterMode ? (
-                                    <>
+                                <>
                                     <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
                                         Create new account
                                     </Typography>
-                                    <TextField onChange={(e) => setUsername(e.target.value)} margin="normal" required fullWidth id="username" label="Username" name="username" autoComplete="username" autoFocus />
-                                    <TextField onChange={(e) => setEmail(e.target.value)} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
-                                    <TextField onChange={(e) => setPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
-                                    <TextField onChange={(e) => setConfirmPassword(e.target.value)} margin="normal" required fullWidth name="confirmPassword" label="Confirm password" type="password" id="confirmPassword" autoComplete="current-password" />
+                                    <TextField onChange={(e) => setUser({...user, username: e.target.value})} margin="normal" required fullWidth id="username" label="Username" name="username" autoComplete="username" autoFocus />
+                                    <TextField onChange={(e) => setUser({...user, emailAddress: e.target.value})} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
+                                    <TextField onChange={(e) => setUser({...user, password: e.target.value})} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+                                    <TextField onChange={(e) => setUser({...user, confirmPassword: e.target.value})} margin="normal" required fullWidth name="confirmPassword" label="Confirm password" type="password" id="confirmPassword" autoComplete="current-password" />
                                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
                                         Sign In
                                     </Button>
@@ -114,8 +91,8 @@ export const Login = () => {
                                         <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
                                             Sign in
                                         </Typography>
-                                        <TextField onChange={(e) => setEmail(e.target.value)} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
-                                        <TextField onChange={(e) => setPassword(e.target.value)} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+                                        <TextField onChange={(e) => setUser({...user, emailAddress: e.target.value})} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+                                        <TextField onChange={(e) => setUser({...user, password: e.target.value})} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
                                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
                                             Sign In
                                         </Button>
@@ -131,4 +108,6 @@ export const Login = () => {
             </>}
         </>
     );
-}
+};
+
+export default Login;
