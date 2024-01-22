@@ -5,6 +5,7 @@ import CookieConsentModal from '../Modals/CookieConsentModal';
 import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import config from '../../config';
+import Link from '@mui/material/Link/Link';
 
 export default function Footer(){
   const [cookies] = useCookies(["cookiesConsent"]);
@@ -41,8 +42,13 @@ export default function Footer(){
             <Typography variant="body1" noWrap component="div" style={{ marginLeft: 16 }}>
               Version {config.version}
             </Typography>
+            <Typography variant="body1" noWrap component="div" style={{ marginLeft: 16}}>
+              <Link href="https://storyset.com/online" target='_blank' style={{color: 'var(--lap-navy-blue)'}}>
+                Online illustrations by Storyset
+              </Link>
+            </Typography>
           </Box>
-          <Typography onClick={showCookiesConsentModal} variant="body1" noWrap component="div" sx={{ cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', height: '40px', borderTop: 'solid var(--lap-grey) 2px', backgroundColor: 'var(--lap-white)', paddingRight: 2 }}>
+          <Typography onClick={showCookiesConsentModal} variant="body1" noWrap component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', height: '40px', borderTop: 'solid var(--lap-grey) 2px', backgroundColor: 'var(--lap-white)', paddingRight: 2 }}>
             <CookieOutlinedIcon sx={{ fontSize: 14, marginRight: 1 }} />
             Manage Cookies policy
           </Typography>
