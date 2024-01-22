@@ -14,6 +14,7 @@ import LearningAppTheme from './theme';
 import UserService from './Services/UserService';
 import { CookiesProvider } from 'react-cookie';
 import NotFound from './Pages/NotFound/NotFound';
+import Error from './Pages/Error/Error';
 
 function App() {
   const [userContext, setUserContext] = useState<UserDto | null>(null);
@@ -45,6 +46,7 @@ function App() {
                   <Route path='/login' element={<Login />}/>
                   <Route path='/register' element={<Login />}/>
                   <Route path='/dashboard' element={<Dashboard />}/>
+                  <Route path='/error' element={<Error />}/>
                   <Route path='*' element={<NotFound />} />
                 </Routes>
               </AuthGuard>
