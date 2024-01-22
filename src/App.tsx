@@ -13,6 +13,7 @@ import { ThemeContext } from '@emotion/react';
 import LearningAppTheme from './theme';
 import UserService from './Services/UserService';
 import { CookiesProvider } from 'react-cookie';
+import NotFound from './Pages/NotFound/NotFound';
 
 function App() {
   const [userContext, setUserContext] = useState<UserDto | null>(null);
@@ -44,6 +45,7 @@ function App() {
                   <Route path='/login' element={<Login />}/>
                   <Route path='/register' element={<Login />}/>
                   <Route path='/dashboard' element={<Dashboard />}/>
+                  <Route path='*' element={<NotFound />} />
                 </Routes>
               </AuthGuard>
             </Layout>
