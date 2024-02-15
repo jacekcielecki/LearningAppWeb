@@ -38,9 +38,13 @@ const Login = () => {
             email: user.emailAddress,
             password: user.password
         });
-        const authSuccess = await AccountService.Login(loginRequest);
-        authSuccess ? navigateToDashboard() :
-        setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+        AccountService.Login(loginRequest).then((response) =>{
+            const token = response.data;
+            localStorage.setItem('token', token);
+            navigateToDashboard();
+        }).catch((error) => {
+            setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+        });
     }
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {

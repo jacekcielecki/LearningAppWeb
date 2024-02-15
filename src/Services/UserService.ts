@@ -1,15 +1,12 @@
 import { UserDto } from "../Models/User/UserDto";
-import config from "../config";
-import Http from "./Http";
+import http from "./Http";
 
 const UserService = {
-  async GetAll(): Promise<UserDto[]> {
-    const response = await Http.get<UserDto[]>(`${config.apiUrl}/User`);
-    return response;
+  GetAll: () => {
+    return http.get<UserDto[]>(`/User`);
   },
-  async GetById(id: number): Promise<UserDto> {
-    const response = await Http.get<UserDto>(`${config.apiUrl}/User/${id}`);
-    return response;
+  GetById: (id : number) => {
+    return http.get<UserDto>(`/User/${id}`);
   }
 };
 
