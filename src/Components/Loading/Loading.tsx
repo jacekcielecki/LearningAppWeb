@@ -1,9 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
 
-interface LoadingProps {
-    isEnabled: boolean;
-}
-
 function Loading() {
   return (
     <>

@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authRoutes } from '../../routes';
 import { jwtDecode } from 'jwt-decode';
 import UserService from '../../Services/UserService';
 import UserContext from '../../Contexts/UserContext';
+import Loading from '../Loading/Loading';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigateToErrorPage = () => { 
     navigate('/error');
@@ -42,8 +44,10 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       if (!!decodedToken?.jti){
         UserService.GetById(parseInt(decodedToken.jti)).then((response) => {
           setUser(response.data);
+          setLoading(false);
         }).catch(() => {
           navigateToErrorPage();
+          setLoading(false);
         });
       }
     }
@@ -63,12 +67,18 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   useEffect(() => {
     if(authRoutes.includes(location.pathname)){
+      setLoading(true);
       /* Block not logged in users from accessing components that require authentication */
       authorize();
     }
   }, [location.pathname, navigate]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {loading && <Loading />}
+      {children}
+    </>
+  );
 };
 
 export default AuthGuard;
