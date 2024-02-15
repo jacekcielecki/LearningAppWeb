@@ -4,7 +4,7 @@ import http from './Http';
 
 const CategoryService = {
   GetAll: () => {
-    return http.get<CategoryDto>(`/Category`);
+    return http.get<CategoryDto[]>(`/Category`);
   },
   Create: (body : CreateCategoryRequest) => {
     return http.post<CategoryDto>(`/Category`, body);

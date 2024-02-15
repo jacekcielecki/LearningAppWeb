@@ -49,9 +49,11 @@ const Login = () => {
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const registerSuccess = await AccountService.Register(user);
-        registerSuccess ? navigateToDashboard() : 
-        setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+        AccountService.Register(user).then((response) =>{
+            navigateToDashboard();
+        }).catch((error) => {
+            setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+        });
     };
 
     const ToggleMode = () => {

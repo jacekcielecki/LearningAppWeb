@@ -9,7 +9,7 @@ export const Home = () => {
 
     const handleLoginRedirect = () => {
         const token = localStorage.getItem("token");
-        if(token !== null && token !== ""){
+        if(!!token){
             navigate("/dashboard");
         }else{
             navigate("/login");
@@ -18,7 +18,7 @@ export const Home = () => {
 
     const handleRegisterRedirect = () => {
         const token = localStorage.getItem("token");
-        if(token !== null && token !== ""){
+        if(!!token){
             navigate("/dashboard");
         }else{
             navigate("/register");

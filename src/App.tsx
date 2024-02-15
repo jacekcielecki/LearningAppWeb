@@ -21,11 +21,14 @@ function App() {
 
   const setContexts = async () => {
     const token = localStorage.getItem('token');
-    if(token !== null && token !== ''){
+    if(!!token){
       const decodedToken = jwtDecode(token);
-      if(decodedToken.jti != null){
-        const user = await UserService.GetById(parseInt(decodedToken.jti));
-        setUserContext(user);
+      if(!!decodedToken.jti){
+        UserService.GetById(parseInt(decodedToken.jti)).then((response) => {
+          setUserContext(response.data);
+        }).catch((error) => {
+          alert('Server offline!');
+        });
       }
     }
   };

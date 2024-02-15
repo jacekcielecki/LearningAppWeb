@@ -32,8 +32,9 @@ export const Dashboard = () => {
     }, [])
 
     const fetchCategories = async () => {
-        const categories = await CategoryService.GetAll();
-        setCategories(categories);
+        CategoryService.GetAll().then((response) => {
+            setCategories(response.data);
+        });
     };
 
     async function handleDelete(categoryId : number) {

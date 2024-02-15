@@ -39,8 +39,11 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   const refreshUserContext = async () => {
     if (userContext === null && !!jwtPayload?.jti){
-      const user = await UserService.GetById(parseInt(jwtPayload.jti));
-      user !== null ? setUserContext(user) : navigateToErrorPage();
+      UserService.GetById(parseInt(jwtPayload.jti)).then((response) => {
+        setUserContext(response.data);
+      }).catch(() => {
+        navigateToErrorPage();
+      });
     }
   }
 
