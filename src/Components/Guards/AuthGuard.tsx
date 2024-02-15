@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authRoutes } from '../../routes';
-import { UserDto } from '../../Models/User/UserDto';
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import UserService from '../../Services/UserService';
+import UserContext from '../../Contexts/UserContext';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -12,8 +12,7 @@ interface AuthGuardProps {
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [jwtPayload, setJwtPayload] = useState<JwtPayload | null>(null);
-  const [userContext, setUserContext] = useState<UserDto | null>(null);
+  const { user, setUser } = useContext(UserContext);
 
   const navigateToErrorPage = () => { 
     navigate('/error');
@@ -29,7 +28,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       if(!!decodedToken.jti && !!decodedToken.exp){
         const currentTime = Date.now() / 1000;
         const tokenExpired = decodedToken.exp < currentTime;
-        setJwtPayload(decodedToken);
         return !tokenExpired;
       }
       return false;
@@ -38,19 +36,29 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   const refreshUserContext = async () => {
-    if (userContext === null && !!jwtPayload?.jti){
-      UserService.GetById(parseInt(jwtPayload.jti)).then((response) => {
-        setUserContext(response.data);
-      }).catch(() => {
-        navigateToErrorPage();
-      });
+    const token = localStorage.getItem("token");
+    if(!!token){
+      const decodedToken = jwtDecode(token);
+      if (!!decodedToken?.jti){
+        UserService.GetById(parseInt(decodedToken.jti)).then((response) => {
+          setUser(response.data);
+        }).catch(() => {
+          navigateToErrorPage();
+        });
+      }
     }
   }
 
   const authorize = async () => {
     const token = localStorage.getItem('token');
     const isValidToken = validateJwtToken(token);
-    isValidToken ? await refreshUserContext() : navigateToLoginPage();
+
+    if(!isValidToken){
+      navigateToLoginPage();
+      return;
+    }
+
+    await refreshUserContext();
   }
 
   useEffect(() => {
@@ -58,7 +66,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       /* Block not logged in users from accessing components that require authentication */
       authorize();
     }
-  }, [location.pathname, navigate, userContext]);
+  }, [location.pathname, navigate]);
 
   return <>{children}</>;
 };

@@ -4,43 +4,23 @@ import Layout from './Components/Layout/Layout';
 import { Home } from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
-import { useEffect, useState } from 'react';
-import { jwtDecode } from "jwt-decode";
+import { useState } from 'react';
 import AuthGuard from './Components/Guards/AuthGuard';
 import UserContext from './Contexts/UserContext';
 import { UserDto } from './Models/User/UserDto';
 import { ThemeContext } from '@emotion/react';
 import LearningAppTheme from './theme';
-import UserService from './Services/UserService';
 import { CookiesProvider } from 'react-cookie';
 import NotFound from './Pages/NotFound/NotFound';
 import Error from './Pages/Error/Error';
 
 function App() {
-  const [userContext, setUserContext] = useState<UserDto | null>(null);
-
-  const setContexts = async () => {
-    const token = localStorage.getItem('token');
-    if(!!token){
-      const decodedToken = jwtDecode(token);
-      if(!!decodedToken.jti){
-        UserService.GetById(parseInt(decodedToken.jti)).then((response) => {
-          setUserContext(response.data);
-        }).catch((error) => {
-          alert('Server offline!');
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    setContexts();
-  }, []);
+  const [user, setUser] = useState<UserDto | null>(null);
 
   return (
     <CookiesProvider>
       <ThemeContext.Provider value={LearningAppTheme}>
-        <UserContext.Provider value={userContext}>
+        <UserContext.Provider value={{ user, setUser }}>
           <Router>
             <Layout>
               <AuthGuard>

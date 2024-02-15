@@ -13,7 +13,7 @@ import { authRoutes } from '../../routes';
 export default function Header() {
   let navigate = useNavigate(); 
   const location = useLocation();
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
 
   const navigateHome = () =>{ 
     navigate('/');
@@ -31,7 +31,7 @@ export default function Header() {
           (
             <div style={{display: 'flex', alignItems: 'center'}}>
               <Typography variant="body1" noWrap component="div" sx={{cursor: 'pointer'}}>
-                {user?.emailAddress}
+                {userContext.user?.emailAddress}
               </Typography>
               <UserAvatar/>
               <UserMenu/>
