@@ -1,4 +1,4 @@
-import ilustrationUrl from '../../Assets/Images/Service Unavailable.png';
+import ilustrationUrl from '../../assets/images/Service Unavailable.png';
 import Box from '@mui/material/Box/Box';
 
 function Error() {

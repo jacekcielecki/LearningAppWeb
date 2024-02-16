@@ -1,4 +1,3 @@
-import { CategoryDto } from '../../Models/Category/CategoryDto'
 import { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,10 +10,11 @@ import { Alert, Box, Button, IconButton, Snackbar } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CreateCategoryModal from '../../Components/Modals/CreateCategoryModal';
 import React from 'react';
-import ConfirmationModal from '../../Components/Modals/ConfirmationModal';
-import CategoryService from '../../Services/CategoryService';
+import CategoryService from '../../services/CategoryService';
+import CreateCategoryModal from '../../components/Modals/CreateCategoryModal';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
+import { CategoryDto } from '../../interfaces/Category/CategoryDto';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({

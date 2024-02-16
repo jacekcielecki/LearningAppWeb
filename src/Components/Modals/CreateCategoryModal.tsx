@@ -5,8 +5,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CategoryService from '../../Services/CategoryService';
-import { CreateCategoryRequest } from '../../Models/Category/CreateCategoryRequest';
+import CategoryService from '../../services/CategoryService';
+import { CreateCategoryRequest } from '../../interfaces/Category/CreateCategoryRequest';
 
 interface CreateCategoryModalProps {
   isOpen: boolean;

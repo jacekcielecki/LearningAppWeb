@@ -1,4 +1,4 @@
-import ilustrationUrl from '../../Assets/Images/Not Found.png';
+import ilustrationUrl from '../../assets/images/Not Found.png';
 import Box from '@mui/material/Box/Box';
 
 function NotFound() {

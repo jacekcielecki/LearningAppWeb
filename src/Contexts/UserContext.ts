@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserDto } from '../Models/User/UserDto';
+import { UserDto } from '../interfaces/User/UserDto';
 
 interface UserContextType {
     user: UserDto | null;

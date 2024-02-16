@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserMenu from './UserMenu';
 import UserAvatar from './UserAvatar';
-import UserContext from '../../Contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import { authRoutes } from '../../routes';
 
 export default function Header() {

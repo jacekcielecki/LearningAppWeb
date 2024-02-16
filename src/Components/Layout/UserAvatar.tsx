@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar/Avatar'
-import UserContext from '../../Contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import { useContext } from 'react';
 
 function UserAvatar () {

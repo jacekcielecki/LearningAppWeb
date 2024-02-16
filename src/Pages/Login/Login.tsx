@@ -3,12 +3,12 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import AccountService from '../../Services/AccountService';
+import AccountService from '../../services/AccountService';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import { useEffect, useState } from "react";
-import { LoginDto } from '../../Models/Account/LoginDto';
-import { CreateUserRequest } from '../../Models/Account/CreateUserRequest';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { CreateUserRequest } from '../../interfaces/Account/CreateUserRequest';
+import { LoginDto } from '../../interfaces/Account/LoginDto';
 
 const Login = () => {
     const location = useLocation();

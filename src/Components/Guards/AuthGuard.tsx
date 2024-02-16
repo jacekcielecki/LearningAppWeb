@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authRoutes } from '../../routes';
 import { jwtDecode } from 'jwt-decode';
-import UserService from '../../Services/UserService';
-import UserContext from '../../Contexts/UserContext';
+import UserService from '../../services/UserService';
+import UserContext from '../../contexts/UserContext';
 import Loading from '../Loading/Loading';
 
 interface AuthGuardProps {

@@ -1,18 +1,18 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Layout from './Components/Layout/Layout';
-import { Home } from './Pages/Home/Home';
-import Login from './Pages/Login/Login';
-import { Dashboard } from './Pages/Dashboard/Dashboard';
+import { Home } from './pages/Home/Home';
+import Login from './pages/Login/Login';
+import { Dashboard } from './pages/Dashboard/Dashboard';
 import { useState } from 'react';
-import AuthGuard from './Components/Guards/AuthGuard';
-import UserContext from './Contexts/UserContext';
-import { UserDto } from './Models/User/UserDto';
+import UserContext from './contexts/UserContext';
+import { UserDto } from './interfaces/User/UserDto';
 import { ThemeContext } from '@emotion/react';
 import LearningAppTheme from './theme';
 import { CookiesProvider } from 'react-cookie';
-import NotFound from './Pages/NotFound/NotFound';
-import Error from './Pages/Error/Error';
+import NotFound from './pages/NotFound/NotFound';
+import Error from './pages/Error/Error';
+import AuthGuard from './components/Guards/AuthGuard';
+import Layout from './components/Layout/Layout';
 
 function App() {
   const [user, setUser] = useState<UserDto | null>(null);
