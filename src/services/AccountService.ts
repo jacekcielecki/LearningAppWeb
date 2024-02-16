@@ -1,6 +1,6 @@
 import { CreateUserRequest } from "../interfaces/Account/CreateUserRequest";
 import { LoginDto } from "../interfaces/Account/LoginDto";
-import http from "./httpg";
+import http from "./http";
 
 const AccountService = {
     Register: (body: CreateUserRequest) => {

@@ -1,5 +1,5 @@
 import { UserDto } from "../interfaces/User/UserDto";
-import http from "./httpg";
+import http from "./http";
 
 const UserService = {
   GetAll: () => {
