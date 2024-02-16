@@ -1,6 +1,6 @@
 import { CategoryDto } from '../interfaces/Category/CategoryDto';
 import { CreateCategoryRequest } from '../interfaces/Category/CreateCategoryRequest';
-import http from './http';
+import http from './httpg';
 
 const CategoryService = {
   GetAll: () => {
