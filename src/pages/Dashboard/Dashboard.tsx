@@ -15,6 +15,7 @@ import CategoryService from '../../services/CategoryService';
 import CreateCategoryModal from '../../components/Modals/CreateCategoryModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { CategoryDto } from '../../interfaces/Category/CategoryDto';
+import CreateQuestionModal from '../../components/Modals/CreateQuestionModal';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({
@@ -26,6 +27,7 @@ export const Dashboard = () => {
     const [categoryToDeleteId, setcategoryToDeleteId] = useState<number | null>(null);
     const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
     const [createCategoryModalIsOpen, setCreateCategoryModalIsOpen] = React.useState<boolean>(false);
+    const [createQuestionModalOpen, setCreateQuestionModalOpen] = React.useState<boolean>(false);
 
     useEffect(() => {
         fetchCategories();
@@ -73,8 +75,21 @@ export const Dashboard = () => {
         setCreateCategoryModalIsOpen(true);
     };
 
+    const showCreateQuestionModal = (categoryId: number) => {
+        setCreateQuestionModalOpen(true);
+    };
+
+    const handleCreateQuestionModalSubmit = () => {
+        setCreateQuestionModalOpen(false);
+    };
+
+    const handleCreateQuestionModalCancel = () => {
+        setCreateQuestionModalOpen(false);
+    };
+    
     return (
         <>
+            <CreateQuestionModal isOpen={createQuestionModalOpen} onDialogSubmit={handleCreateQuestionModalSubmit} onDialogCancel={handleCreateQuestionModalCancel} />
             <CreateCategoryModal isOpen={createCategoryModalIsOpen} onDialogSubmit={handleCreateCategoryModalSubmit} onDialogCancel={handleCreateCategoryModalCancel} />
             <ConfirmationModal isOpen={confirmationModalIsOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
 
@@ -102,6 +117,7 @@ export const Dashboard = () => {
                         <TableCell align="right">Name</TableCell>
                         <TableCell align="right">Description</TableCell>
                         <TableCell align="right">Delete</TableCell>
+                        <TableCell align="right">Add Question</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -114,6 +130,13 @@ export const Dashboard = () => {
                             <Tooltip title="Delete category" arrow placement="bottom">
                                 <IconButton aria-label="delete" onClick={() => handleDelete(category.id)}>
                                     <DeleteIcon />
+                                </IconButton>                        
+                            </Tooltip>
+                        </TableCell>
+                        <TableCell align="right">
+                            <Tooltip title="Add Question" arrow placement="bottom">
+                                <IconButton aria-label="add question" onClick={() => showCreateQuestionModal(category.id)}>
+                                    <AddIcon />
                                 </IconButton>                        
                             </Tooltip>
                         </TableCell>
