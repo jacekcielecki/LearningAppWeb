@@ -4,6 +4,7 @@
   --lap-orange-darken: #cc5a47;
   --lap-grey: #e1e1e1;
   --lap-grey-darken: #9d9d9d;
+  --lap-yellow: #FDCA40;
   --lap-navy-blue: #385a64;
   --lap-navy-blue-darken: #1a2e35;
 }
@@ -30,4 +31,52 @@
 
 .btn-navy-blue:hover {
   background-color: var(--lap-navy-blue-darken) !important;
+}
+
+.cookies-info{
+  font-size: 16px !important;
+  padding: 18px !important;
+  font-weight: 400;
+  background: #ebeced;
+  border: 2px solid var(--lap-grey);
+  color: black !important; 
+  flex-wrap: wrap; 
+  left: 2vh;
+  right: 2vh;
+  bottom: 2vh;
+  position: fixed; 
+  width: 98%;
+  z-index: 999;
+}
+
+.loader-container {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  left: 50%;
+  z-index: 99999;
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.loader-top-45 {
+  top: 45%;
+  transform: translate(-50%,-45%);
+}
+
+.loader-top-50 {
+  top: 50%;
+  transform: translate(-50%,-50%);
 }
