@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { IDialogHandle } from '../../interfaces/IDialogHandle';
+import { IDialogHandle } from '../../../interfaces/IDialogHandle';
 import Dialog from '@mui/material/Dialog/Dialog';
 import Button from '@mui/material/Button/Button';
 import DialogTitle from '@mui/material/DialogTitle/DialogTitle';
 import DialogContent from '@mui/material/DialogContent/DialogContent';
 import DialogActions from '@mui/material/DialogActions/DialogActions';
-import CreateQuestionRequest from '../../interfaces/Question/CreateQuestionRequest';
+import CreateQuestionRequest from '../../../interfaces/Question/CreateQuestionRequest';
 import TextField from '@mui/material/TextField/TextField';
 import FormControl from '@mui/material/FormControl/FormControl';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
@@ -22,7 +22,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
       b: '',
       c: '',
       d: '',
-      correctAnswer: '',
+      correctAnswer: 'a',
       level: 1
     });
 
@@ -34,7 +34,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
         b: '',
         c: '',
         d: '',
-        correctAnswer: '',
+        correctAnswer: 'a',
         level: 1
       });
     };
@@ -79,7 +79,8 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
                   value={createQuestionRequest.correctAnswer}
                   label="Correct answer"
                   onChange={(event: SelectChangeEvent) => {
-                  setCreateQuestionRequest({...createQuestionRequest, correctAnswer: event.target.value});}}
+                  setCreateQuestionRequest({...createQuestionRequest,
+                     correctAnswer: event.target.value});}}
                 >
                   <MenuItem value={'a'}>A</MenuItem>
                   <MenuItem value={'b'}>B</MenuItem>
@@ -96,8 +97,8 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
                   value={createQuestionRequest.level}
                   label="Correct answer"
                   onChange={(event: SelectChangeEvent<number>) => {
-                  setCreateQuestionRequest({...createQuestionRequest, level: 
-                  +event.target.value });}}
+                  setCreateQuestionRequest({...createQuestionRequest,
+                     level: +event.target.value});}}
                 >
                   <MenuItem value={1}>Easy</MenuItem>
                   <MenuItem value={2}>Medium</MenuItem>
