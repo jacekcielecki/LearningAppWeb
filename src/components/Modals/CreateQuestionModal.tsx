@@ -22,7 +22,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
       b: '',
       c: '',
       d: '',
-      correctAnswer: '',
+      correctAnswer: 'a',
       level: 1
     });
 
@@ -34,7 +34,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
         b: '',
         c: '',
         d: '',
-        correctAnswer: '',
+        correctAnswer: 'a',
         level: 1
       });
     };
