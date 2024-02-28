@@ -25,6 +25,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
       c: '',
       d: '',
       correctAnswer: 'a',
+      correctAnswer: 'a',
       level: 1
     };
     const [createQuestionRequest, setCreateQuestionRequest] = useState<CreateQuestionRequest>(defaults);
