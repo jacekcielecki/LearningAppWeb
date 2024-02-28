@@ -15,7 +15,7 @@ import CategoryService from '../../services/CategoryService';
 import CreateCategoryModal from '../../components/Modals/CreateCategoryModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { CategoryDto } from '../../interfaces/Category/CategoryDto';
-import CreateQuestionModal from '../../components/Modals/CreateQuestionModal/CreateQuestionModal';
+import CreateQuestionModal from '../../components/Modals/CreateQuestionModal';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({
