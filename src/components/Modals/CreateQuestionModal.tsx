@@ -31,7 +31,7 @@ interface ICreateQuestionModalProps {
   categoryId: number;
 }
 
-const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
+const CreateQuestionModal: React.FC<IDialogHandle & ICreateQuestionModalProps> = ({isOpen, onDialogCancel, onDialogSubmit, categoryId}) => {
 
     const form = useForm<CreateQuestionRequest>({
       defaultValues: { questionContent: "", imageUrl: "", a: "", b: "", c: "", d: "", correctAnswer: "a", level: 1 },
@@ -46,7 +46,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
     };
 
     const onSubmit = async (form : CreateQuestionRequest) => {
-      QuestionService.Create(form, 3005).then(() => {
+      QuestionService.Create(form, categoryId).then(() => {
         onDialogSubmit();
       });
     };
