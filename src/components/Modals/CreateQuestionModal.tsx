@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { IDialogHandle } from '../../interfaces/IDialogHandle';
 import Dialog from '@mui/material/Dialog/Dialog';
 import Button from '@mui/material/Button/Button';
@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField/TextField';
 import FormControl from '@mui/material/FormControl/FormControl';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import InputLabel from '@mui/material/InputLabel/InputLabel';
-import { Select, SelectChangeEvent } from '@mui/material';
+import { FormHelperText, Select } from '@mui/material';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,29 +22,20 @@ const schema = yup.object({
   b: yup.string().required("Please fill in possible answer b"),
   c: yup.string().required("Please fill in possible answer c"),
   d: yup.string().required("Please fill in possible answer d"),
-  // correctAnswer: yup.string().required().oneOf(["a", "b", "c", "d"], "Invalid answer selected"),
-  // level: yup.number().required().min(1).max(3),
+  correctAnswer: yup.string().required().oneOf(["a", "b", "c", "d"], "Invalid answer selected"),
+  level: yup.number().required().min(1).max(3),
 });
 
 const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
 
     const form = useForm<CreateQuestionRequest>({
-      defaultValues: {
-        questionContent: "",
-        imageUrl: "",
-        a: "",
-        b: "",
-        c: "",
-        d: "",
-        // correctAnswer: "a",
-        // level: 1
-      },
+      defaultValues: { questionContent: "", imageUrl: "", a: "", b: "", c: "", d: "", correctAnswer: "a", level: 1 },
       resolver: yupResolver(schema) as any,
       mode: 'onChange'
     });
     const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
 
-    const handleClose = () => {
+    const onCancel = () => {
       onDialogCancel();
       reset();
     };
@@ -57,12 +48,11 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
     useEffect(() => {
       if (isSubmitSuccessful) {
         reset();
-        console.log("Form submitted successfully");
       }
   }, [isSubmitSuccessful, reset]);
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} fullWidth={true} maxWidth='sm'>
+        <Dialog open={isOpen} onClose={onCancel} fullWidth={true} maxWidth='sm'>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle>Add Question</DialogTitle>
             <DialogContent>
@@ -74,13 +64,12 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
               <TextField error={!!errors.c} helperText={errors.c?.message} {...register("c")}  size='small' margin="dense" id="c" label="Answer C" type="text" fullWidth variant="outlined"/>
               <TextField error={!!errors.d} helperText={errors.d?.message} {...register("d")} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"/>
 
-              {/* <TextField error={!!errors.imageUrl} helperText={errors.imageUrl?.message} {...register("imageUrl")} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"/> */}
 
-
-              {/* <FormControl fullWidth sx={{mt: 3}} size='small'>
+              <FormControl fullWidth sx={{mt: 3}} size='small' error={!!errors.correctAnswer}>
                 <InputLabel id="correct-answer-input-label">Correct answer</InputLabel>
                 <Select
                   {...register("correctAnswer")}
+                  defaultValue={'a'}
                   labelId="correct-answer-label"
                   id="correct-answer"
                   label="Correct answer"
@@ -90,25 +79,28 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
                   <MenuItem value={'c'}>C</MenuItem>
                   <MenuItem value={'d'}>D</MenuItem>
                 </Select>
+              {errors.correctAnswer && <FormHelperText>{errors.correctAnswer?.message}</FormHelperText>}
               </FormControl>
 
-              <FormControl fullWidth sx={{mt: 2}} size='small'>
+              <FormControl fullWidth sx={{mt: 2}} size='small' error={!!errors.level}>
                 <InputLabel id="difficulty-level-input-label">Difficulty level</InputLabel>
-                <Select
-                  {...register("level")}
-                  labelId="difficulty-level-label"
-                  id="difficulty-level"
-                  label="Correct answer"
-                >
-                  <MenuItem value={1}>Easy</MenuItem>
-                  <MenuItem value={2}>Medium</MenuItem>
-                  <MenuItem value={3}>Hard</MenuItem>
-                </Select>
-              </FormControl> */}
+                  <Select
+                    {...register("level")}
+                    defaultValue={1}
+                    labelId="difficulty-level-label"
+                    id="difficulty-level"
+                    label="Correct answer"
+                  >
+                    <MenuItem value={1}>Easy</MenuItem>
+                    <MenuItem value={2}>Medium</MenuItem>
+                    <MenuItem value={3}>Hard</MenuItem>
+                  </Select>
+                {errors.level && <FormHelperText>{errors.level?.message}</FormHelperText>}
+              </FormControl>
 
             </DialogContent>
             <DialogActions>
-              <Button color='secondary' onClick={handleClose}>Cancel</Button>
+              <Button color='secondary' onClick={onCancel}>Cancel</Button>
               <Button color='primary' type='submit'>Submit</Button>
             </DialogActions>
           </form>

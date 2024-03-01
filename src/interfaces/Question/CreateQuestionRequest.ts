@@ -5,8 +5,8 @@ interface CreateQuestionRequest {
     b: string;
     c: string;
     d: string;
-    // correctAnswer: string;
-    // level: number;
+    correctAnswer: string;
+    level: number;
 }
 
 export default CreateQuestionRequest;
