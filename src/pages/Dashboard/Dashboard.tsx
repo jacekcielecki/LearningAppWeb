@@ -16,6 +16,7 @@ import CreateCategoryModal from '../../components/Modals/CreateCategoryModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { CategoryDto } from '../../interfaces/Category/CategoryDto';
 import CreateQuestionModal from '../../components/Modals/CreateQuestionModal';
+import { PlayArrow } from '@mui/icons-material';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({
@@ -118,6 +119,8 @@ export const Dashboard = () => {
                         <TableCell align="left">Name</TableCell>
                         <TableCell align="left">Description</TableCell>
                         <TableCell align="left">Created Questions</TableCell>
+                        <TableCell align="left">Author</TableCell>
+                        <TableCell align="right">Play</TableCell>
                         <TableCell align="right">Delete</TableCell>
                         <TableCell align="right">Add Question</TableCell>
                     </TableRow>
@@ -125,28 +128,40 @@ export const Dashboard = () => {
                     <TableBody>
                     {categories?.map((category) => (
                         <TableRow key={category.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell sx={{width: 130, overflow: 'hidden'}} align="left" component="th" scope="row">{category.id}</TableCell>
-                        <TableCell sx={{width: 200, overflow: 'hidden'}} align="left"><b>{category.name}</b></TableCell>
-                        <TableCell sx={{width: 300, overflow: 'hidden'}} align="left">{category.description}</TableCell>
-                        <TableCell sx={{width: 300, overflow: 'hidden', fontSize: 14}} align="left">
-                            {`Easy: ${category.questions.filter(q => q.level === 1).length}/${category.quizPerLevel}`} <br/>
-                            {`Medium: ${category.questions.filter(q => q.level === 2).length}/${category.quizPerLevel}`} <br/>
-                            {`Hard: ${category.questions.filter(q => q.level === 3).length}/${category.quizPerLevel}`}
-                        </TableCell>
-                        <TableCell align="right">
-                            <Tooltip title="Delete category" arrow placement="bottom">
-                                <IconButton aria-label="delete" onClick={() => handleDelete(category.id)}>
-                                    <DeleteIcon />
-                                </IconButton>                        
-                            </Tooltip>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Tooltip title="Add Question" arrow placement="bottom">
-                                <IconButton aria-label="add question" onClick={() => showCreateQuestionModal(category.id)}>
-                                    <AddIcon />
-                                </IconButton>                        
-                            </Tooltip>
-                        </TableCell>
+                            <TableCell sx={{width: 130, overflow: 'hidden'}} align="left" component="th" scope="row">{category.id}</TableCell>
+                            <TableCell sx={{width: 200, overflow: 'hidden'}} align="left"><b>{category.name}</b></TableCell>
+                            <TableCell sx={{width: 300, overflow: 'hidden'}} align="left">{category.description}</TableCell>
+                            <TableCell sx={{width: 200, overflow: 'hidden', fontSize: 14}} align="left">
+                                {`Easy: ${category.questions.filter(q => q.level === 1).length}/${category.quizPerLevel}`} <br/>
+                                {`Medium: ${category.questions.filter(q => q.level === 2).length}/${category.quizPerLevel}`} <br/>
+                                {`Hard: ${category.questions.filter(q => q.level === 3).length}/${category.quizPerLevel}`}
+                            </TableCell>
+                            <TableCell sx={{width: 160, overflow: 'hidden'}} align="left">{category.creator?.emailAddress}</TableCell>
+
+                            <TableCell align="right">
+                                <Tooltip title="Start quiz" arrow placement="bottom">
+                                    <IconButton aria-label="start quiz">
+                                        <PlayArrow />
+                                    </IconButton>                        
+                                </Tooltip>
+                            </TableCell>
+
+                            <TableCell align="right">
+                                <Tooltip title="Delete category" arrow placement="bottom">
+                                    <IconButton aria-label="delete" onClick={() => handleDelete(category.id)}>
+                                        <DeleteIcon />
+                                    </IconButton>                        
+                                </Tooltip>
+                            </TableCell>
+
+                            <TableCell align="right">
+                                <Tooltip title="Add Question" arrow placement="bottom">
+                                    <IconButton aria-label="add question" onClick={() => showCreateQuestionModal(category.id)}>
+                                        <AddIcon />
+                                    </IconButton>                        
+                                </Tooltip>
+                            </TableCell>
+                            
                         </TableRow>
                     ))}
                     </TableBody>
