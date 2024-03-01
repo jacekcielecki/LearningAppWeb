@@ -81,6 +81,7 @@ export const Dashboard = () => {
     const handleCreateQuestionModalSubmit = () => {
         setCreateQuestionModalOpen(false);
         setSnackbar({...snackbar, visible: true, message: 'New question added succesfully', severity: 'success'});
+        fetchCategories();
     };
 
     const handleCreateQuestionModalCancel = () => {
@@ -113,9 +114,10 @@ export const Dashboard = () => {
                 <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
                     <TableHead>
                     <TableRow>
-                        <TableCell align="right">Id</TableCell>
-                        <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Description</TableCell>
+                        <TableCell align="left">Id</TableCell>
+                        <TableCell align="left">Name</TableCell>
+                        <TableCell align="left">Description</TableCell>
+                        <TableCell align="left">Created Questions</TableCell>
                         <TableCell align="right">Delete</TableCell>
                         <TableCell align="right">Add Question</TableCell>
                     </TableRow>
@@ -123,9 +125,14 @@ export const Dashboard = () => {
                     <TableBody>
                     {categories?.map((category) => (
                         <TableRow key={category.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell component="th" scope="row">{category.id}</TableCell>
-                        <TableCell align="right">{category.name}</TableCell>
-                        <TableCell align="right">{category.description}</TableCell>
+                        <TableCell sx={{width: 130, overflow: 'hidden'}} align="left" component="th" scope="row">{category.id}</TableCell>
+                        <TableCell sx={{width: 200, overflow: 'hidden'}} align="left"><b>{category.name}</b></TableCell>
+                        <TableCell sx={{width: 300, overflow: 'hidden'}} align="left">{category.description}</TableCell>
+                        <TableCell sx={{width: 300, overflow: 'hidden', fontSize: 14}} align="left">
+                            {`Easy: ${category.questions.filter(q => q.level === 1).length}/${category.quizPerLevel}`} <br/>
+                            {`Medium: ${category.questions.filter(q => q.level === 2).length}/${category.quizPerLevel}`} <br/>
+                            {`Hard: ${category.questions.filter(q => q.level === 3).length}/${category.quizPerLevel}`}
+                        </TableCell>
                         <TableCell align="right">
                             <Tooltip title="Delete category" arrow placement="bottom">
                                 <IconButton aria-label="delete" onClick={() => handleDelete(category.id)}>
