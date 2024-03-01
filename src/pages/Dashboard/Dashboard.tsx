@@ -24,7 +24,8 @@ export const Dashboard = () => {
         severity: 'success'
       });
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
-    const [categoryToDeleteId, setcategoryToDeleteId] = useState<number | null>(null);
+    const [categoryId, setCategoryId] = useState<number>(0);
+
     const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
     const [createCategoryModalIsOpen, setCreateCategoryModalIsOpen] = React.useState<boolean>(false);
     const [createQuestionModalOpen, setCreateQuestionModalOpen] = React.useState<boolean>(false);
@@ -40,21 +41,18 @@ export const Dashboard = () => {
     };
 
     async function handleDelete(categoryId : number) {
-        setcategoryToDeleteId(categoryId);
+        setCategoryId(categoryId);
         setConfirmationModalIsOpen(true);
     }
 
     const handleConfirmationDialogSubmit = async () => {
-        if(categoryToDeleteId !== null){
-            await CategoryService.Delete(categoryToDeleteId);
-            setSnackbar({...snackbar, message: 'Category deleted sucesfully', visible: true, severity: 'success'});
-            fetchCategories();
-        }
+        await CategoryService.Delete(categoryId);
+        setSnackbar({...snackbar, message: 'Category deleted sucesfully', visible: true, severity: 'success'});
+        fetchCategories();
         setConfirmationModalIsOpen(false);
     };
 
     const handleConfirmationDialogCancel = () => {
-        setcategoryToDeleteId(null);
         setConfirmationModalIsOpen(false);
     };
 
@@ -76,11 +74,14 @@ export const Dashboard = () => {
     };
 
     const showCreateQuestionModal = (categoryId: number) => {
+        setCategoryId(categoryId);
         setCreateQuestionModalOpen(true);
     };
 
     const handleCreateQuestionModalSubmit = () => {
         setCreateQuestionModalOpen(false);
+        setSnackbar({...snackbar, visible: true, message: 'New question added succesfully', severity: 'success'});
+        fetchCategories();
     };
 
     const handleCreateQuestionModalCancel = () => {
@@ -89,7 +90,7 @@ export const Dashboard = () => {
     
     return (
         <>
-            <CreateQuestionModal isOpen={createQuestionModalOpen} onDialogSubmit={handleCreateQuestionModalSubmit} onDialogCancel={handleCreateQuestionModalCancel} />
+            <CreateQuestionModal categoryId={categoryId} isOpen={createQuestionModalOpen} onDialogSubmit={handleCreateQuestionModalSubmit} onDialogCancel={handleCreateQuestionModalCancel} />
             <CreateCategoryModal isOpen={createCategoryModalIsOpen} onDialogSubmit={handleCreateCategoryModalSubmit} onDialogCancel={handleCreateCategoryModalCancel} />
             <ConfirmationModal isOpen={confirmationModalIsOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
 
@@ -113,9 +114,10 @@ export const Dashboard = () => {
                 <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
                     <TableHead>
                     <TableRow>
-                        <TableCell align="right">Id</TableCell>
-                        <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Description</TableCell>
+                        <TableCell align="left">Id</TableCell>
+                        <TableCell align="left">Name</TableCell>
+                        <TableCell align="left">Description</TableCell>
+                        <TableCell align="left">Created Questions</TableCell>
                         <TableCell align="right">Delete</TableCell>
                         <TableCell align="right">Add Question</TableCell>
                     </TableRow>
@@ -123,9 +125,14 @@ export const Dashboard = () => {
                     <TableBody>
                     {categories?.map((category) => (
                         <TableRow key={category.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell component="th" scope="row">{category.id}</TableCell>
-                        <TableCell align="right">{category.name}</TableCell>
-                        <TableCell align="right">{category.description}</TableCell>
+                        <TableCell sx={{width: 130, overflow: 'hidden'}} align="left" component="th" scope="row">{category.id}</TableCell>
+                        <TableCell sx={{width: 200, overflow: 'hidden'}} align="left"><b>{category.name}</b></TableCell>
+                        <TableCell sx={{width: 300, overflow: 'hidden'}} align="left">{category.description}</TableCell>
+                        <TableCell sx={{width: 300, overflow: 'hidden', fontSize: 14}} align="left">
+                            {`Easy: ${category.questions.filter(q => q.level === 1).length}/${category.quizPerLevel}`} <br/>
+                            {`Medium: ${category.questions.filter(q => q.level === 2).length}/${category.quizPerLevel}`} <br/>
+                            {`Hard: ${category.questions.filter(q => q.level === 3).length}/${category.quizPerLevel}`}
+                        </TableCell>
                         <TableCell align="right">
                             <Tooltip title="Delete category" arrow placement="bottom">
                                 <IconButton aria-label="delete" onClick={() => handleDelete(category.id)}>
