@@ -14,6 +14,7 @@ import { FormHelperText, Select } from '@mui/material';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import QuestionService from '../../services/QuestionService';
 
 const schema = yup.object({
   questionContent: yup.string().required("Please fill in your question"),
@@ -25,6 +26,10 @@ const schema = yup.object({
   correctAnswer: yup.string().required().oneOf(["a", "b", "c", "d"], "Invalid answer selected"),
   level: yup.number().required().min(1).max(3),
 });
+
+interface ICreateQuestionModalProps {
+  categoryId: number;
+}
 
 const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
 
@@ -41,8 +46,9 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
     };
 
     const onSubmit = async (form : CreateQuestionRequest) => {
-      console.log("Form submited successfully", form);
-      onDialogSubmit();
+      QuestionService.Create(form, 3005).then(() => {
+        onDialogSubmit();
+      });
     };
 
     useEffect(() => {
@@ -59,6 +65,7 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
 
               <TextField error={!!errors.questionContent} helperText={errors.questionContent?.message} {...register("questionContent")} 
                 autoFocus size='small' multiline rows={3} margin="dense" id="questionContent" label="Question" type="text" fullWidth variant="outlined"/>          
+              
               <TextField error={!!errors.a} helperText={errors.a?.message} {...register("a")} sx={{mt: 3}} size='small' margin="dense" id="a" label="Answer A" type="text" fullWidth variant="outlined"/>
               <TextField error={!!errors.b} helperText={errors.b?.message} {...register("b")}  size='small' margin="dense" id="b" label="Answer B" type="text" fullWidth variant="outlined"/>
               <TextField error={!!errors.c} helperText={errors.c?.message} {...register("c")}  size='small' margin="dense" id="c" label="Answer C" type="text" fullWidth variant="outlined"/>
@@ -107,6 +114,5 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
         </Dialog>  
       );
 };
-
 
 export default CreateQuestionModal;
