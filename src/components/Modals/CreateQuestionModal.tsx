@@ -11,111 +11,100 @@ import FormControl from '@mui/material/FormControl/FormControl';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import InputLabel from '@mui/material/InputLabel/InputLabel';
 import { Select, SelectChangeEvent } from '@mui/material';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+const schema = yup.object({
+  questionContent: yup.string().required("Please fill in your question"),
+  imageUrl: yup.string().trim().nullable().notRequired(),
+  a: yup.string().required("Please fill in possible answer a"),
+  b: yup.string().required("Please fill in possible answer b"),
+  c: yup.string().required("Please fill in possible answer c"),
+  d: yup.string().required("Please fill in possible answer d"),
+  // correctAnswer: yup.string().required().oneOf(["a", "b", "c", "d"], "Invalid answer selected"),
+  // level: yup.number().required().min(1).max(3),
+});
+
 const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
-    const [open, setOpen] = useState(isOpen);
-    const defaults : CreateQuestionRequest = {
-      questionContent: '',
-      imageUrl: '',
-      a: '',
-      b: '',
-      c: '',
-      d: '',
-      correctAnswer: 'a',
-      correctAnswer: 'a',
-      level: 1
-    };
-    const [createQuestionRequest, setCreateQuestionRequest] = useState<CreateQuestionRequest>(defaults);
 
-    const validationSchema = Yup.object({
-      questionContent: Yup.string().required("Please fill in your question"),
-      a: Yup.string().required("Please fill in possible answer a"),
-      b: Yup.string().required("Please fill in possible answer b"),
-      c: Yup.string().optional(),
-      d: Yup.string().optional(),
-      // correctAnswer: Yup.string().required().oneOf(["a", "b", "c", "d"], "Invalid answer selected"),
-      // level: Yup.number().required().min(1).max(3),
-    });
-
-    const { register, handleSubmit, formState: {errors} } = useForm({
-      resolver: yupResolver(validationSchema),
-      defaultValues: defaults,
+    const form = useForm<CreateQuestionRequest>({
+      defaultValues: {
+        questionContent: "",
+        imageUrl: "",
+        a: "",
+        b: "",
+        c: "",
+        d: "",
+        // correctAnswer: "a",
+        // level: 1
+      },
+      resolver: yupResolver(schema) as any,
       mode: 'onChange'
     });
+    const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
 
     const handleClose = () => {
-        onDialogCancel();
+      onDialogCancel();
+      reset();
     };
 
-    const onSubmit = async () => {
-      //will only be called if the form is valid
-      console.log(createQuestionRequest);
+    const onSubmit = async (form : CreateQuestionRequest) => {
+      console.log("Form submited successfully", form);
       onDialogSubmit();
     };
 
     useEffect(() => {
-        setCreateQuestionRequest(defaults);
-        setOpen(isOpen);
-    }, [isOpen]);
+      if (isSubmitSuccessful) {
+        reset();
+        console.log("Form submitted successfully");
+      }
+  }, [isSubmitSuccessful, reset]);
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
+        <Dialog open={isOpen} onClose={handleClose} fullWidth={true} maxWidth='sm'>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle>Add Question</DialogTitle>
             <DialogContent>
 
-              <TextField error={!!errors.questionContent} helperText={errors.questionContent?.message} {...register("questionContent")} autoFocus value={createQuestionRequest.questionContent} size='small' multiline rows={3} margin="dense" id="questionContent" label="Question" type="text" fullWidth variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setCreateQuestionRequest({...createQuestionRequest, questionContent: event.target.value });}}/>
-              
-              <TextField error={!!errors.a} helperText={errors.a?.message} {...register("a")} value={createQuestionRequest.a} sx={{mt: 3}} size='small' margin="dense" id="a" label="Answer A" type="text" fullWidth variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setCreateQuestionRequest({...createQuestionRequest, a: event.target.value });}}/>
-              
-              <TextField error={!!errors.b} helperText={errors.b?.message} {...register("b")} value={createQuestionRequest.b} size='small' margin="dense" id="b" label="Answer B" type="text" fullWidth variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setCreateQuestionRequest({...createQuestionRequest, b: event.target.value });}}/>
-              
-              <TextField error={!!errors.c} helperText={errors.c?.message} {...register("c")} value={createQuestionRequest.c} size='small' margin="dense" id="c" label="Answer C" type="text" fullWidth variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setCreateQuestionRequest({...createQuestionRequest, c: event.target.value });}}/>
-              
-              <TextField error={!!errors.d} helperText={errors.d?.message} {...register("d")} value={createQuestionRequest.d} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setCreateQuestionRequest({...createQuestionRequest, d: event.target.value });}}/>
+              <TextField error={!!errors.questionContent} helperText={errors.questionContent?.message} {...register("questionContent")} 
+                autoFocus size='small' multiline rows={3} margin="dense" id="questionContent" label="Question" type="text" fullWidth variant="outlined"/>          
+              <TextField error={!!errors.a} helperText={errors.a?.message} {...register("a")} sx={{mt: 3}} size='small' margin="dense" id="a" label="Answer A" type="text" fullWidth variant="outlined"/>
+              <TextField error={!!errors.b} helperText={errors.b?.message} {...register("b")}  size='small' margin="dense" id="b" label="Answer B" type="text" fullWidth variant="outlined"/>
+              <TextField error={!!errors.c} helperText={errors.c?.message} {...register("c")}  size='small' margin="dense" id="c" label="Answer C" type="text" fullWidth variant="outlined"/>
+              <TextField error={!!errors.d} helperText={errors.d?.message} {...register("d")} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"/>
 
-              <FormControl fullWidth sx={{mt: 3}} size='small'>
+              {/* <TextField error={!!errors.imageUrl} helperText={errors.imageUrl?.message} {...register("imageUrl")} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"/> */}
+
+
+              {/* <FormControl fullWidth sx={{mt: 3}} size='small'>
                 <InputLabel id="correct-answer-input-label">Correct answer</InputLabel>
                 <Select
+                  {...register("correctAnswer")}
                   labelId="correct-answer-label"
                   id="correct-answer"
-                  value={createQuestionRequest.correctAnswer}
                   label="Correct answer"
-                  onChange={(event: SelectChangeEvent) => {
-                  setCreateQuestionRequest({...createQuestionRequest,
-                     correctAnswer: event.target.value});}}
                 >
                   <MenuItem value={'a'}>A</MenuItem>
                   <MenuItem value={'b'}>B</MenuItem>
                   <MenuItem value={'c'}>C</MenuItem>
-                  <MenuItem value={'c'}>D</MenuItem>
+                  <MenuItem value={'d'}>D</MenuItem>
                 </Select>
               </FormControl>
 
               <FormControl fullWidth sx={{mt: 2}} size='small'>
                 <InputLabel id="difficulty-level-input-label">Difficulty level</InputLabel>
                 <Select
+                  {...register("level")}
                   labelId="difficulty-level-label"
                   id="difficulty-level"
-                  value={createQuestionRequest.level}
                   label="Correct answer"
-                  onChange={(event: SelectChangeEvent<number>) => {
-                  setCreateQuestionRequest({...createQuestionRequest,
-                     level: +event.target.value});}}
                 >
                   <MenuItem value={1}>Easy</MenuItem>
                   <MenuItem value={2}>Medium</MenuItem>
                   <MenuItem value={3}>Hard</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
 
             </DialogContent>
             <DialogActions>
@@ -126,5 +115,6 @@ const CreateQuestionModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
         </Dialog>  
       );
 };
+
 
 export default CreateQuestionModal;
