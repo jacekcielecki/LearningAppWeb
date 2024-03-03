@@ -14,9 +14,9 @@ import React from 'react';
 import CategoryService from '../../services/CategoryService';
 import CreateCategoryModal from '../../components/Modals/CreateCategoryModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
-import { CategoryDto } from '../../interfaces/Category/CategoryDto';
 import CreateQuestionModal from '../../components/Modals/CreateQuestionModal';
 import { PlayArrow } from '@mui/icons-material';
+import CategoryDto from '../../interfaces/Category/CategoryDto';
 
 export const Dashboard = () => {
     const [snackbar, setSnackbar] = React.useState({
@@ -60,6 +60,7 @@ export const Dashboard = () => {
     const handleCreateCategoryModalSubmit = () => {
         setCreateCategoryModalIsOpen(false);
         setSnackbar({...snackbar, visible: true, message: 'New category created succesfully', severity: 'success'});
+        fetchCategories();
     };
 
     const handleCreateCategoryModalCancel = () => {
