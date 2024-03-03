@@ -33,86 +33,140 @@ interface ICreateQuestionModalProps {
 
 const CreateQuestionModal: React.FC<IDialogHandle & ICreateQuestionModalProps> = ({isOpen, onDialogCancel, onDialogSubmit, categoryId}) => {
 
-    const form = useForm<CreateQuestionRequest>({
-      defaultValues: { questionContent: "", imageUrl: "", a: "", b: "", c: "", d: "", correctAnswer: "a", level: 1 },
-      resolver: yupResolver(schema) as any,
-      mode: 'onChange'
+  const form = useForm<CreateQuestionRequest>({
+    defaultValues: { questionContent: "", imageUrl: "", a: "", b: "", c: "", d: "", correctAnswer: "a", level: 1 },
+    resolver: yupResolver(schema) as any,
+    mode: 'onChange'
+  });
+  const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
+
+  const onCancel = () => {
+    onDialogCancel();
+    reset();
+  };
+
+  const onSubmit = async (form : CreateQuestionRequest) => {
+    QuestionService.Create(form, categoryId).then(() => {
+      onDialogSubmit();
     });
-    const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
+  };
 
-    const onCancel = () => {
-      onDialogCancel();
+  useEffect(() => {
+    if (isSubmitSuccessful) {
       reset();
-    };
+    }
+}, [isSubmitSuccessful, reset]);
 
-    const onSubmit = async (form : CreateQuestionRequest) => {
-      QuestionService.Create(form, categoryId).then(() => {
-        onDialogSubmit();
-      });
-    };
+  return (
+    <Dialog open={isOpen} onClose={onCancel} fullWidth={true} maxWidth='sm'>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogTitle>Add Question</DialogTitle>
+        <DialogContent>
 
-    useEffect(() => {
-      if (isSubmitSuccessful) {
-        reset();
-      }
-  }, [isSubmitSuccessful, reset]);
+          <TextField 
+            error={!!errors.questionContent} 
+            helperText={errors.questionContent?.message} 
+            {...register("questionContent")} 
+            autoFocus 
+            size='small' 
+            multiline 
+            rows={3} 
+            margin="dense"
+            label="Question" 
+            type="text" 
+            fullWidth 
+            variant="outlined"
+          />          
+          
+          <TextField 
+            error={!!errors.a} 
+            helperText={errors.a?.message} 
+            {...register("a")} 
+            sx={{mt: 3}} 
+            size='small' 
+            margin="dense" 
+            label="Answer A" 
+            type="text" 
+            fullWidth 
+            variant="outlined"
+          />
 
-    return (
-        <Dialog open={isOpen} onClose={onCancel} fullWidth={true} maxWidth='sm'>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogTitle>Add Question</DialogTitle>
-            <DialogContent>
+          <TextField 
+            error={!!errors.b} 
+            helperText={errors.b?.message} 
+            {...register("b")} 
+            size='small' margin="dense" 
+            label="Answer B" 
+            type="text" 
+            fullWidth 
+            variant="outlined"
+          />
 
-              <TextField error={!!errors.questionContent} helperText={errors.questionContent?.message} {...register("questionContent")} 
-                autoFocus size='small' multiline rows={3} margin="dense" id="questionContent" label="Question" type="text" fullWidth variant="outlined"/>          
-              
-              <TextField error={!!errors.a} helperText={errors.a?.message} {...register("a")} sx={{mt: 3}} size='small' margin="dense" id="a" label="Answer A" type="text" fullWidth variant="outlined"/>
-              <TextField error={!!errors.b} helperText={errors.b?.message} {...register("b")}  size='small' margin="dense" id="b" label="Answer B" type="text" fullWidth variant="outlined"/>
-              <TextField error={!!errors.c} helperText={errors.c?.message} {...register("c")}  size='small' margin="dense" id="c" label="Answer C" type="text" fullWidth variant="outlined"/>
-              <TextField error={!!errors.d} helperText={errors.d?.message} {...register("d")} size='small' margin="dense" id="d" label="Answer D" type="text" fullWidth variant="outlined"/>
+          <TextField 
+            error={!!errors.c} 
+            helperText={errors.c?.message} 
+            {...register("c")} 
+            size='small' 
+            margin="dense" 
+            label="Answer C" 
+            type="text" 
+            fullWidth 
+            variant="outlined"
+          />
 
+          <TextField 
+            error={!!errors.d} 
+            helperText={errors.d?.message} 
+            {...register("d")} 
+            size='small'
+              margin="dense" 
+              label="Answer D" 
+              type="text" 
+              fullWidth 
+              variant="outlined"
+          />
 
-              <FormControl fullWidth sx={{mt: 3}} size='small' error={!!errors.correctAnswer}>
-                <InputLabel id="correct-answer-input-label">Correct answer</InputLabel>
-                <Select
-                  {...register("correctAnswer")}
-                  defaultValue={'a'}
-                  labelId="correct-answer-label"
-                  id="correct-answer"
-                  label="Correct answer"
-                >
-                  <MenuItem value={'a'}>A</MenuItem>
-                  <MenuItem value={'b'}>B</MenuItem>
-                  <MenuItem value={'c'}>C</MenuItem>
-                  <MenuItem value={'d'}>D</MenuItem>
-                </Select>
-              {errors.correctAnswer && <FormHelperText>{errors.correctAnswer?.message}</FormHelperText>}
-              </FormControl>
+          <FormControl fullWidth sx={{mt: 3}} size='small' error={!!errors.correctAnswer}>
+            <InputLabel id="correct-answer-input-label">Correct answer</InputLabel>
+            <Select
+              {...register("correctAnswer")}
+              defaultValue={'a'}
+              labelId="correct-answer-label"
+              id="correct-answer"
+              label="Correct answer"
+            >
+              <MenuItem value={'a'}>A</MenuItem>
+              <MenuItem value={'b'}>B</MenuItem>
+              <MenuItem value={'c'}>C</MenuItem>
+              <MenuItem value={'d'}>D</MenuItem>
+            </Select>
+            {errors.correctAnswer && <FormHelperText>{errors.correctAnswer?.message}</FormHelperText>}
+          </FormControl>
 
-              <FormControl fullWidth sx={{mt: 2}} size='small' error={!!errors.level}>
-                <InputLabel id="difficulty-level-input-label">Difficulty level</InputLabel>
-                  <Select
-                    {...register("level")}
-                    defaultValue={1}
-                    labelId="difficulty-level-label"
-                    id="difficulty-level"
-                    label="Correct answer"
-                  >
-                    <MenuItem value={1}>Easy</MenuItem>
-                    <MenuItem value={2}>Medium</MenuItem>
-                    <MenuItem value={3}>Hard</MenuItem>
-                  </Select>
-                {errors.level && <FormHelperText>{errors.level?.message}</FormHelperText>}
-              </FormControl>
+          <FormControl fullWidth sx={{mt: 2}} size='small' error={!!errors.level}>
+            <InputLabel id="difficulty-level-input-label">Difficulty level</InputLabel>
+            <Select
+              {...register("level")}
+              defaultValue={1}
+              labelId="difficulty-level-label"
+              id="difficulty-level"
+              label="Correct answer"
+            >
+              <MenuItem value={1}>Easy</MenuItem>
+              <MenuItem value={2}>Medium</MenuItem>
+              <MenuItem value={3}>Hard</MenuItem>
+            </Select>
+            {errors.level && <FormHelperText>{errors.level?.message}</FormHelperText>}
+          </FormControl>
 
-            </DialogContent>
-            <DialogActions>
-              <Button color='secondary' onClick={onCancel}>Cancel</Button>
-              <Button color='primary' type='submit'>Submit</Button>
-            </DialogActions>
-          </form>
-        </Dialog>  
-      );
+        </DialogContent>
+        <DialogActions>
+          <Button color='secondary' onClick={onCancel}>Cancel</Button>
+          <Button color='primary' type='submit'>Submit</Button>
+        </DialogActions>
+      </form>
+    </Dialog>  
+  );
 };
 
 export default CreateQuestionModal;
