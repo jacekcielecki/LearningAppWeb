@@ -7,8 +7,8 @@ import AccountService from '../../services/AccountService';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CreateUserRequest } from '../../interfaces/Account/CreateUserRequest';
-import { LoginDto } from '../../interfaces/Account/LoginDto';
+import LoginDto from '../../interfaces/Account/LoginDto';
+import CreateUserRequest from '../../interfaces/Account/CreateUserRequest';
 
 const Login = () => {
     const location = useLocation();

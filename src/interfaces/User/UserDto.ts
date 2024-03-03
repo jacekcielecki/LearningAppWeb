@@ -1,4 +1,4 @@
-import { RoleDto } from "./RoleDto";
+import RoleDto from "./RoleDto";
 
 export interface UserDto {
     id: number;
@@ -8,3 +8,5 @@ export interface UserDto {
     isVerified: boolean;
     role: RoleDto;
 }
+
+export default UserDto;

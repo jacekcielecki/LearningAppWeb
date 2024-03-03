@@ -1,7 +1,7 @@
 import QuestionDto from "../Question/QuestionDto";
 import { UserDto } from "../User/UserDto";
 
-export interface CategoryDto {
+interface CategoryDto {
   id: number;
   name: string;
   description: string;
@@ -13,3 +13,5 @@ export interface CategoryDto {
   creator?: UserDto;
   questions: QuestionDto[];
 }
+
+export default CategoryDto;
