@@ -16,8 +16,8 @@ const schema = yup.object({
   name: yup.string().required("Please fill in category name").min(1, "Name is too short").max(40, "Name must be at most 40 characters"),
   description: yup.string().required("Please fill in category description").max(140, "Description must be at most 140 characters"),
   iconUrl: yup.string().notRequired(),
-  questionsPerQuiz: yup.number().integer().required().min(5, "Questions per quiz must be at least 5").max(20, "Questions per quiz must be at most 20"),
-  quizPerLevel: yup.number().integer().required().min(2, "Quiz per level must be at least 2").max(5, "Quiz per level must be at most 5")
+  questionsPerQuiz: yup.number().integer().required("Questions per quiz must be at least 5").min(5, "Questions per quiz must be at least 5").max(20, "Questions per quiz must be at most 20"),
+  quizPerLevel: yup.number().integer().required("Quiz per level must be at least 2").min(2, "Quiz per level must be at least 2").max(5, "Quiz per level must be at most 5")
 });
 
 const CreateCategoryModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
@@ -93,7 +93,7 @@ const CreateCategoryModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, o
             helperText={errors.questionsPerQuiz?.message}
           />
 
-          <TextField 
+          <TextField
             autoFocus
             {...register("quizPerLevel")}
             margin="dense"
