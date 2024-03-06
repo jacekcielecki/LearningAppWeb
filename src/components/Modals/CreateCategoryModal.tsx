@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -6,95 +6,83 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CategoryService from '../../services/CategoryService';
+import { IDialogHandle } from '../../interfaces/IDialogHandle';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CreateCategoryRequest from '../../interfaces/Category/CreateCategoryRequest';
 
-interface CreateCategoryModalProps {
-  isOpen: boolean;
-  onDialogCancel: (...args: any[]) => any;
-  onDialogSubmit: (...args: any[]) => any;
-}
+const schema = yup.object({
+  name: yup.string().required("Please fill in category name").min(1, "Name is too short").max(40, "Name must be at most 40 characters"),
+  description: yup.string().required("Please fill in category description").max(140, "Description must be at most 140 characters"),
+  iconUrl: yup.string().notRequired(),
+  questionsPerQuiz: yup.number().integer().required(),
+  quizPerLevel: yup.number().integer().required()
+});
 
-const CATEGORY_NAME_MAX_LENGTH = 20;
-const CATEGORY_DESCRIPTION_MAX_LENGTH = 100;
+const CreateCategoryModal: React.FC<IDialogHandle> = ({isOpen, onDialogCancel, onDialogSubmit}) => {
 
-const CreateCategoryModal: React.FC<CreateCategoryModalProps> = (props) => {
-  const [category, setCategory] = useState<CreateCategoryRequest>({
-    name: '',
-    description: '',
-    iconUrl: '',
-    questionsPerQuiz: 5,
-    quizPerLevel: 5
+  const form = useForm<CreateCategoryRequest>({
+    defaultValues: { name: "", description: "", iconUrl: "", questionsPerQuiz: 10, quizPerLevel: 5 },
+    resolver: yupResolver(schema) as any,
+    mode: 'onChange'
   });
-  const [open, setOpen] = useState(props.isOpen);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [descriptionError, setDescriptionError] = useState<string | null>(null);
+  const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (nameError || descriptionError) {
-      // Do not submit if there is a validation error
-      return;
-    }
-    const createSuccess = await CategoryService.Create(category);
-    if (createSuccess) {
-      props.onDialogSubmit();
-    } else {
-      props.onDialogCancel();
-    }
+  const onSubmit = async (form : CreateCategoryRequest) => {
+    CategoryService.Create(form).then(() => {
+      onDialogSubmit();
+    });
   };
 
-  const handleClose = () => {
-    props.onDialogCancel();
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    setCategory((prevCategory) => ({ ...prevCategory, name: newName }));
-
-    // Validate the name length
-    if (newName.length > CATEGORY_NAME_MAX_LENGTH) {
-      setNameError(`Name must be at most ${CATEGORY_NAME_MAX_LENGTH} characters`);
-    }
-    else if(newName.length === 0){
-      setNameError('Name cannot be empty');
-    } 
-    else {
-      setNameError(null);
-    }
-  };
-
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDescritpion = e.target.value;
-    setCategory((prevCategory) => ({ ...prevCategory, description: newDescritpion }));
-
-    // Validate the descritpion length
-    if (newDescritpion.length > CATEGORY_DESCRIPTION_MAX_LENGTH) {
-      setDescriptionError(`Description must be at most ${CATEGORY_DESCRIPTION_MAX_LENGTH} characters`);
-    }
-    else {
-      setDescriptionError(null);
-    }
+  const onCancel = () => {
+    onDialogCancel();
+    reset();
   };
 
   useEffect(() => {
-    setOpen(props.isOpen);
-    setNameError(null);
-    setDescriptionError(null);
-    setCategory({...category, name: '', description: ''})
-  }, [props.isOpen]);
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth='sm'>
-      <form onSubmit={handleSubmit}>
+    <Dialog open={isOpen} onClose={onCancel} fullWidth={true} maxWidth='sm'>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Create category</DialogTitle>
         <DialogContent>
-          <TextField autoFocus value={category.name} margin="dense" id="name" label="Name" type="text" fullWidth variant="outlined" 
-              onChange={handleNameChange} error={!!nameError} helperText={nameError}/>
-          <TextField value={category.description} sx={{mt: 2}} margin="dense" id="description" label="Description" type="text" fullWidth variant="outlined" multiline rows={3}
-              onChange={handleDescriptionChange} error={!!descriptionError} helperText={descriptionError}/>
+
+          <TextField 
+            autoFocus
+            {...register("name")}
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
+
+          <TextField 
+            {...register("description")} 
+            sx={{mt: 2}}
+            margin="dense"
+            id="description"
+            label="Description"
+            type="text"
+            fullWidth
+            variant="outlined"
+            multiline
+            rows={3}
+            error={!!errors.description} 
+            helperText={errors.description?.message}
+          />
+        
         </DialogContent>
         <DialogActions>
-          <Button color='secondary' onClick={handleClose} >Cancel</Button>
+          <Button color='secondary' onClick={onCancel}>Cancel</Button>
           <Button color='primary' type='submit'>Submit</Button>
         </DialogActions>
       </form>

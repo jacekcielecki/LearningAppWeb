@@ -27,8 +27,8 @@ export const Dashboard = () => {
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [categoryId, setCategoryId] = useState<number>(0);
 
-    const [confirmationModalIsOpen, setConfirmationModalIsOpen] = React.useState<boolean>(false);
-    const [createCategoryModalIsOpen, setCreateCategoryModalIsOpen] = React.useState<boolean>(false);
+    const [confirmationModalOpen, setConfirmationModalOpen] = React.useState<boolean>(false);
+    const [createCategoryModalOpen, setCreateCategoryModalOpen] = React.useState<boolean>(false);
     const [createQuestionModalOpen, setCreateQuestionModalOpen] = React.useState<boolean>(false);
 
     useEffect(() => {
@@ -43,28 +43,28 @@ export const Dashboard = () => {
 
     async function handleDelete(categoryId : number) {
         setCategoryId(categoryId);
-        setConfirmationModalIsOpen(true);
+        setConfirmationModalOpen(true);
     }
 
     const handleConfirmationDialogSubmit = async () => {
         await CategoryService.Delete(categoryId);
         setSnackbar({...snackbar, message: 'Category deleted sucesfully', visible: true, severity: 'success'});
         fetchCategories();
-        setConfirmationModalIsOpen(false);
+        setConfirmationModalOpen(false);
     };
 
     const handleConfirmationDialogCancel = () => {
-        setConfirmationModalIsOpen(false);
+        setConfirmationModalOpen(false);
     };
 
     const handleCreateCategoryModalSubmit = () => {
-        setCreateCategoryModalIsOpen(false);
+        setCreateCategoryModalOpen(false);
         setSnackbar({...snackbar, visible: true, message: 'New category created succesfully', severity: 'success'});
         fetchCategories();
     };
 
     const handleCreateCategoryModalCancel = () => {
-        setCreateCategoryModalIsOpen(false);
+        setCreateCategoryModalOpen(false);
     };
 
     const handleHideSnackbar = () => {
@@ -72,7 +72,7 @@ export const Dashboard = () => {
     };
 
     const handleOpenCreateCategoryModal = () => {
-        setCreateCategoryModalIsOpen(true);
+        setCreateCategoryModalOpen(true);
     };
 
     const showCreateQuestionModal = (categoryId: number) => {
@@ -93,8 +93,8 @@ export const Dashboard = () => {
     return (
         <>
             <CreateQuestionModal categoryId={categoryId} isOpen={createQuestionModalOpen} onDialogSubmit={handleCreateQuestionModalSubmit} onDialogCancel={handleCreateQuestionModalCancel} />
-            <CreateCategoryModal isOpen={createCategoryModalIsOpen} onDialogSubmit={handleCreateCategoryModalSubmit} onDialogCancel={handleCreateCategoryModalCancel} />
-            <ConfirmationModal isOpen={confirmationModalIsOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
+            <CreateCategoryModal isOpen={createCategoryModalOpen} onDialogSubmit={handleCreateCategoryModalSubmit} onDialogCancel={handleCreateCategoryModalCancel} />
+            <ConfirmationModal isOpen={confirmationModalOpen} onDialogSubmit={handleConfirmationDialogSubmit} onDialogCancel={handleConfirmationDialogCancel} header={'Confirm delete'} content={'Are you sure you want to do this?'} />
 
             <Snackbar open={snackbar.visible} autoHideDuration={2000} onClose={handleHideSnackbar} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
                 <Alert onClose={handleHideSnackbar} variant="filled" severity="success" sx={{ width: '100%' }}>
