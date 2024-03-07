@@ -45,9 +45,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if(!validToken){
       navigateToLoginPage();
       return;
+    }else{
+      await refreshUserContext();
     }
-
-    await refreshUserContext();
   }
 
   useEffect(() => {

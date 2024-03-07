@@ -5,18 +5,21 @@ import Container from '@mui/material/Container';
 import AccountService from '../../services/AccountService';
 import CreateUserRequest from '../../interfaces/Account/CreateUserRequest';
 import validToken from '../../services/token';
-import { useEffect } from "react";
+import imgUrl from '../../assets/images/login-ilustration.jpg';
+import { useCallback, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Box from '@mui/material/Box/Box';
+import LoginDto from '../../interfaces/Account/LoginDto';
+import { DevTool } from '@hookform/devtools';
 
 const schema = yup.object({
     username: yup.string().required("Please fill in a username you want to use").min(6, "Name is too short").max(40, "Name must be at most 40 characters"),
     password: yup.string().required("Please set your password").min(6, "Password is too short").max(40, "Password must be at most 40 characters"),
     confirmPassword: yup.string().required("Please confirm your password").equals([yup.ref('password'), null], "Passwords must match").required("Please confirm your password"),
-    emailAddress: yup.string().required("Please fill in your email address").email("Please fill in a valid email address"),
+    emailAddress: yup.string().email("Please fill in a valid email address").required("Please fill in your email address"),
     profilePictureUrl: yup.string().notRequired()
 });
 
@@ -30,17 +33,18 @@ const Register = () => {
     });
     const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
     
-    const navigateToDashboard = () => { 
+    const navigateToDashboard = useCallback(() => {
         navigate('/dashboard');
-    }
-
-    const navigateToLogin = () => { 
-        navigate('/login');
-    }
+    }, []);
 
     const onSubmit = async (form : CreateUserRequest) => {
         AccountService.Register(form).then(() => {
-            navigateToLogin();
+            const loginDto : LoginDto = { email: form.emailAddress, password: form.password };
+            AccountService.Login(loginDto).then((response) => {
+                const token = response.data;
+                localStorage.setItem('token', token);
+                navigateToDashboard();
+            });
         });
     };
 
@@ -54,10 +58,10 @@ const Register = () => {
     }, [isSubmitSuccessful, reset, navigateToDashboard]);
 
     return (
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'center', height: '80vh' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Container component="main" maxWidth="md">
-                    <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 2 }}>
+                    <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
                         Register Account
                     </Typography>
                     <div className='register-content'>
@@ -79,9 +83,9 @@ const Register = () => {
                                 {...register("emailAddress")}
                                 margin="normal"
                                 fullWidth
-                                id="email"
+                                id="emailAddress"
                                 label="Email"
-                                name="email"
+                                name="emailAddress"
                                 variant="outlined"
                                 error={!!errors.emailAddress}
                                 helperText={errors.emailAddress?.message}
@@ -89,6 +93,7 @@ const Register = () => {
 
                             <TextField
                                 {...register("password")}
+                                type='password'
                                 margin="normal"
                                 fullWidth
                                 id="password"
@@ -101,6 +106,7 @@ const Register = () => {
 
                             <TextField
                                 {...register("confirmPassword")}
+                                type='password'
                                 margin="normal"
                                 fullWidth
                                 id="confirmPassword"
@@ -112,7 +118,7 @@ const Register = () => {
                             />
                         </div>
                         <Box sx={{ ml: 3, mt: 2 }}>
-                            <img src="https://via.placeholder.com/400" alt="Create new account" />
+                            <img src={imgUrl} style={{ width: 400, height: 400 }} alt=''/>
                         </Box>
                     </div>
 
