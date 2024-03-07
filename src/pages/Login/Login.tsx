@@ -13,7 +13,7 @@ import * as yup from 'yup';
 import Box from '@mui/material/Box/Box';
 import LoginDto from '../../interfaces/Account/LoginDto';
 import Loading from '../../components/Loading/Loading';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, Link } from '@mui/material';
 import ISnackbarState from '../../interfaces/ISnackbarState';
 
 const schema = yup.object({
@@ -79,7 +79,7 @@ const Login = () => {
                             Login to your account
                         </Typography>
                         <div className='register-content'>
-                            <div style={{marginTop: '15%'}}>
+                            <div style={{ marginTop: '15%', position: 'relative' }}>
                                 <div>
 
                                     <TextField
@@ -106,6 +106,12 @@ const Login = () => {
                                         error={!!errors.password}
                                         helperText={errors.password?.message}
                                     />
+
+                                    <Typography variant="body1" noWrap component="div" style={{position: 'absolute', bottom: 0}}>
+                                        <Link href="/register" style={{color: 'var(--lap-navy-blue)'}}>
+                                            Don't have a account yet? Register
+                                        </Link>
+                                    </Typography>
 
                                 </div>
                             </div>

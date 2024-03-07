@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import Box from '@mui/material/Box/Box';
 import LoginDto from '../../interfaces/Account/LoginDto';
 import Loading from '../../components/Loading/Loading';
+import Link from '@mui/material/Link/Link';
 
 const schema = yup.object({
     username: yup.string().required("Please fill in a username you want to use").min(6, "Name is too short").max(40, "Name must be at most 40 characters"),
@@ -70,7 +71,7 @@ const Register = () => {
                             Register Account
                         </Typography>
                         <div className='register-content'>
-                            <div>
+                            <div style={{ position: 'relative' }}>
                                 
                                 <TextField
                                     autoFocus
@@ -122,6 +123,12 @@ const Register = () => {
                                     error={!!errors.confirmPassword}
                                     helperText={errors.confirmPassword?.message}
                                 />
+
+                                <Typography variant="body1" noWrap component="div" style={{position: 'absolute', bottom: 0}}>
+                                    <Link href="/login" style={{color: 'var(--lap-navy-blue)'}}>
+                                        Already have an account? Login here
+                                    </Link>
+                                </Typography>
 
                             </div>
                             <Box sx={{ ml: 3, mt: 2 }}>
