@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import Box from '@mui/material/Box/Box';
 
 const schema = yup.object({
     username: yup.string().required("Please fill in a username you want to use").min(6, "Name is too short").max(40, "Name must be at most 40 characters"),
@@ -50,64 +51,70 @@ const Register = () => {
         if (isSubmitSuccessful) {
             reset();
         }
-    }, [isSubmitSuccessful, reset]);
+    }, [isSubmitSuccessful, reset, navigateToDashboard]);
 
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Container component="main" maxWidth="xs">
-                    <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
+                <Container component="main" maxWidth="md">
+                    <Typography component="h1" variant="h4" sx={{ mt: 2, mb: 2 }}>
                         Register Account
                     </Typography>
+                    <div className='register-content'>
+                        <div>
+                            <TextField
+                                autoFocus
+                                {...register("username")}
+                                margin="normal"
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                variant="outlined"
+                                error={!!errors.username}
+                                helperText={errors.username?.message}
+                            />
 
-                    <TextField
-                        autoFocus
-                        {...register("username")}
-                        margin="normal"
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        variant="outlined"
-                        error={!!errors.username}
-                        helperText={errors.username?.message}
-                    />
+                            <TextField
+                                {...register("emailAddress")}
+                                margin="normal"
+                                fullWidth
+                                id="email"
+                                label="Email"
+                                name="email"
+                                variant="outlined"
+                                error={!!errors.emailAddress}
+                                helperText={errors.emailAddress?.message}
+                            />
 
-                    <TextField
-                        {...register("emailAddress")}
-                        margin="normal"
-                        fullWidth
-                        id="email"
-                        label="Email"
-                        name="email"
-                        variant="outlined"
-                        error={!!errors.emailAddress}
-                        helperText={errors.emailAddress?.message}
-                    />
+                            <TextField
+                                {...register("password")}
+                                margin="normal"
+                                fullWidth
+                                id="password"
+                                label="Password"
+                                name="password"
+                                variant="outlined"
+                                error={!!errors.password}
+                                helperText={errors.password?.message}
+                            />
 
-                    <TextField
-                        {...register("password")}
-                        margin="normal"
-                        fullWidth
-                        id="password"
-                        label="Password"
-                        name="password"
-                        variant="outlined"
-                        error={!!errors.password}
-                        helperText={errors.password?.message}
-                    />
-
-                    <TextField
-                        {...register("confirmPassword")}
-                        margin="normal"
-                        fullWidth
-                        id="confirmPassword"
-                        label="Confirm password"
-                        name="confirmPassword"
-                        variant="outlined"
-                        error={!!errors.confirmPassword}
-                        helperText={errors.confirmPassword?.message}
-                    />
+                            <TextField
+                                {...register("confirmPassword")}
+                                margin="normal"
+                                fullWidth
+                                id="confirmPassword"
+                                label="Confirm password"
+                                name="confirmPassword"
+                                variant="outlined"
+                                error={!!errors.confirmPassword}
+                                helperText={errors.confirmPassword?.message}
+                            />
+                        </div>
+                        <Box sx={{ ml: 3, mt: 2 }}>
+                            <img src="https://via.placeholder.com/400" alt="Create new account" />
+                        </Box>
+                    </div>
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>Register</Button>
                 </Container>
