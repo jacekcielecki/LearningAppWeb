@@ -19,11 +19,7 @@ import { PlayArrow } from '@mui/icons-material';
 import CategoryDto from '../../interfaces/Category/CategoryDto';
 
 export const Dashboard = () => {
-    const [snackbar, setSnackbar] = React.useState({
-        visible: false,
-        message: '',
-        severity: 'success'
-      });
+    const [snackbar, setSnackbar] = React.useState({visible: false, message: '', severity: 'success'});
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [categoryId, setCategoryId] = useState<number>(0);
 

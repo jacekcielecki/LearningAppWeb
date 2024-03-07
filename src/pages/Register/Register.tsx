@@ -71,6 +71,7 @@ const Register = () => {
                         </Typography>
                         <div className='register-content'>
                             <div>
+                                
                                 <TextField
                                     autoFocus
                                     {...register("username")}
@@ -81,7 +82,8 @@ const Register = () => {
                                     name="username"
                                     variant="outlined"
                                     error={!!errors.username}
-                                    helperText={errors.username?.message} />
+                                    helperText={errors.username?.message}
+                                />
 
                                 <TextField
                                     {...register("emailAddress")}
@@ -92,7 +94,8 @@ const Register = () => {
                                     name="emailAddress"
                                     variant="outlined"
                                     error={!!errors.emailAddress}
-                                    helperText={errors.emailAddress?.message} />
+                                    helperText={errors.emailAddress?.message}
+                                />
 
                                 <TextField
                                     {...register("password")}
@@ -104,7 +107,8 @@ const Register = () => {
                                     name="password"
                                     variant="outlined"
                                     error={!!errors.password}
-                                    helperText={errors.password?.message} />
+                                    helperText={errors.password?.message}
+                                />
 
                                 <TextField
                                     {...register("confirmPassword")}
@@ -116,7 +120,9 @@ const Register = () => {
                                     name="confirmPassword"
                                     variant="outlined"
                                     error={!!errors.confirmPassword}
-                                    helperText={errors.confirmPassword?.message} />
+                                    helperText={errors.confirmPassword?.message}
+                                />
+
                             </div>
                             <Box sx={{ ml: 3, mt: 2 }}>
                                 <img src={imgUrl} style={{ width: 400, height: 400 }} alt='' />
