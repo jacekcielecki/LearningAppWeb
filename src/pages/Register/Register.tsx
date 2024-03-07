@@ -15,6 +15,7 @@ import Box from '@mui/material/Box/Box';
 import LoginDto from '../../interfaces/Account/LoginDto';
 import Loading from '../../components/Loading/Loading';
 import Link from '@mui/material/Link/Link';
+import UserService from '../../services/UserService';
 
 const schema = yup.object({
     username: yup.string().required("Please fill in a username you want to use").min(6, "Name is too short").max(40, "Name must be at most 40 characters"),
@@ -33,7 +34,7 @@ const Register = () => {
         resolver: yupResolver(schema) as any,
         mode: 'onChange'
     });
-    const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
+    const { register, handleSubmit, reset, formState: { errors, isSubmitSuccessful }, setError } = form;
     
     const navigateToDashboard = useCallback(() => {
         navigate('/dashboard');
@@ -41,14 +42,24 @@ const Register = () => {
 
     const onSubmit = async (form : CreateUserRequest) => {
         setLoading(true);
-        AccountService.Register(form).then(() => {
-            const loginDto : LoginDto = { email: form.emailAddress, password: form.password };
-            AccountService.Login(loginDto).then((response) => {
-                const token = response.data;
-                localStorage.setItem('token', token);
+
+        UserService.CheckIfEmailTaken(form.emailAddress).then((response) => {
+            const emailTaken = response.data;
+            if (emailTaken) {
                 setLoading(false);
-                navigateToDashboard();
-            });
+                setError("emailAddress", { message: "Email is taken" });
+            } else {
+
+                AccountService.Register(form).then(() => {
+                    const loginDto : LoginDto = { email: form.emailAddress, password: form.password };
+                    AccountService.Login(loginDto).then((response) => {
+                        const token = response.data;
+                        localStorage.setItem('token', token);
+                        setLoading(false);
+                        navigateToDashboard();
+                    });
+                });
+            }
         });
     };
 

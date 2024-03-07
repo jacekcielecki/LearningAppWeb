@@ -7,7 +7,10 @@ const UserService = {
   },
   GetById: (id : number) => {
     return http.get<UserDto>(`/User/${id}`);
-  }
+  },
+  CheckIfEmailTaken: (email : string) => {
+    return http.get<boolean>(`/User/CheckIfEmailTaken?email=${email}`);
+  },
 };
 
 export default UserService;
