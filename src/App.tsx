@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Error from './pages/Error/Error';
 import AuthGuard from './components/Guards/AuthGuard';
 import Layout from './components/Layout/Layout';
+import Register from './pages/Register/Register';
 
 function App() {
   const [user, setUser] = useState<UserDto | null>(null);
@@ -27,7 +28,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Home />}/>
                   <Route path='/login' element={<Login />}/>
-                  <Route path='/register' element={<Login />}/>
+                  <Route path='/register' element={<Register />}/>
                   <Route path='/dashboard' element={<Dashboard />}/>
                   <Route path='/error' element={<Error />}/>
                   <Route path='*' element={<NotFound />} />

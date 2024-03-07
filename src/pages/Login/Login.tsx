@@ -1,117 +1,129 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AccountService from '../../services/AccountService';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
-import { CreateUserRequest } from '../../interfaces/Account/CreateUserRequest';
-import { LoginDto } from '../../interfaces/Account/LoginDto';
+import validToken from '../../services/token';
+import imgUrl from '../../assets/images/login-ilustration.jpg';
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import Box from '@mui/material/Box/Box';
+import LoginDto from '../../interfaces/Account/LoginDto';
+import Loading from '../../components/Loading/Loading';
+import { Snackbar, Alert, Link } from '@mui/material';
+import ISnackbarState from '../../interfaces/ISnackbarState';
+
+const schema = yup.object({
+    email: yup.string().email("Please provide your email address").required("Please provide your email address"),
+    password: yup.string().required("Please provide your password"),
+});
 
 const Login = () => {
-    const location = useLocation();
     const navigate = useNavigate(); 
-    const [isLoading] = useState(false);
-    const [isRegisterMode, setIsRegisterMode] = useState(false);
-    const [user, setUser] = useState<CreateUserRequest>({
-        username: '',
-        password: '',
-        confirmPassword: '',
-        emailAddress: '',
-        profilePictureUrl: ''
+    const [snackbar, setSnackbar] = useState<ISnackbarState>({visible: false, message: '', severity: undefined});
+    const [loading, setLoading] = useState(false);
+
+    const form = useForm<LoginDto>({
+        defaultValues: { email: "", password: "" },
+        resolver: yupResolver(schema) as any,
+        mode: 'onChange'
     });
-
-    const navigateToDashboard = () =>{ 
+    const { register, handleSubmit, reset, formState: {errors, isSubmitSuccessful} } = form;
+    
+    const navigateToDashboard = useCallback(() => {
         navigate('/dashboard');
-    }
+    }, []);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        isRegisterMode ? await handleRegister(e) : await handleLogin(e);
-    }
+    const handleHideSnackbar = () => {
+        setSnackbar({...snackbar, visible: false});
+    };
 
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const loginRequest: LoginDto = ({
-            email: user.emailAddress,
-            password: user.password
-        });
-        AccountService.Login(loginRequest).then((response) =>{
+    const onSubmit = async (form : LoginDto) => {
+        setLoading(true);
+        AccountService.Login(form).then((response) => {
             const token = response.data;
             localStorage.setItem('token', token);
             navigateToDashboard();
-        }).catch((error) => {
-            setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
-        });
-    }
-
-    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        AccountService.Register(user).then((response) =>{
-            navigateToDashboard();
-        }).catch((error) => {
-            setUser({...user, username: '', emailAddress: '', password: '', confirmPassword: ''});
+            setLoading(false);
+        }).catch(() => {
+            setSnackbar({...snackbar, visible: true, message: 'Invalid credentials', severity: 'error'});
+            setLoading(false);
         });
     };
 
-    const ToggleMode = () => {
-        location.pathname === '/register' ? navigate('/login') : navigate('/register');
-    }
-
     useEffect(() => {
-        location.pathname === '/register' ? setIsRegisterMode(true) : setIsRegisterMode(false);
-    }, [location.pathname]);
+        if (validToken()){
+            navigateToDashboard();
+        }
+        if (isSubmitSuccessful) {
+            reset();
+        }
+    }, [isSubmitSuccessful, reset, navigateToDashboard]);
 
     return (
         <>
-            {isLoading ? 
-            <>
-                <div className="loader-container">
-                    <div className="loader loader-top-50">
-                        <CircularProgress color="secondary" size={50} />
-                    </div>
-                </div>
-            </> : 
-            <>
-                <div className='signin'>
-                    <form onSubmit={handleSubmit}>
-                        <Container component="main" maxWidth="xs">
-                            {isRegisterMode ? (
-                                <>
-                                    <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
-                                        Create new account
-                                    </Typography>
-                                    <TextField onChange={(e) => setUser({...user, username: e.target.value})} margin="normal" required fullWidth id="username" label="Username" name="username" autoComplete="username" autoFocus />
-                                    <TextField onChange={(e) => setUser({...user, emailAddress: e.target.value})} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
-                                    <TextField onChange={(e) => setUser({...user, password: e.target.value})} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
-                                    <TextField onChange={(e) => setUser({...user, confirmPassword: e.target.value})} margin="normal" required fullWidth name="confirmPassword" label="Confirm password" type="password" id="confirmPassword" autoComplete="current-password" />
-                                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
-                                        Sign In
-                                    </Button>
-                                </>
-                            ) :
-                                (
-                                    <>
-                                        <Typography component="h1" variant="h5" sx={{ mt: 2, mb: 2 }}>
-                                            Sign in
-                                        </Typography>
-                                        <TextField onChange={(e) => setUser({...user, emailAddress: e.target.value})} margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
-                                        <TextField onChange={(e) => setUser({...user, password: e.target.value})} margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
-                                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>
-                                            Sign In
-                                        </Button>
-                                        <Link variant="body2" onClick={ToggleMode}>
-                                            {"Don't have an account? Sign Up"}
+            {loading && <Loading />}
+            <Snackbar open={snackbar.visible} autoHideDuration={2000} onClose={handleHideSnackbar} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+                <Alert onClose={handleHideSnackbar} variant="filled" severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+
+            <div style={{ display: 'flex', justifyContent: 'center', height: '80vh' }}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Container component="main" maxWidth="md">
+                        <Typography component="h1" variant="h4" sx={{ mb: 2 }}>
+                            Login to your account
+                        </Typography>
+                        <div className='register-content'>
+                            <div style={{ marginTop: '15%', position: 'relative' }}>
+                                <div>
+
+                                    <TextField
+                                        {...register("email")}
+                                        margin="normal"
+                                        fullWidth
+                                        id="email"
+                                        label="Email"
+                                        name="email"
+                                        variant="outlined"
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                    />
+
+                                    <TextField
+                                        {...register("password")}
+                                        type='password'
+                                        margin="normal"
+                                        fullWidth
+                                        id="password"
+                                        label="Password"
+                                        name="password"
+                                        variant="outlined"
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                    />
+
+                                    <Typography variant="body1" noWrap component="div" style={{position: 'absolute', bottom: 0}}>
+                                        <Link href="/register" style={{color: 'var(--lap-navy-blue)'}}>
+                                            Don't have a account yet? Register
                                         </Link>
-                                    </>
-                                )
-                            }
-                        </Container>
-                    </form>
-                </div>
-            </>}
+                                    </Typography>
+
+                                </div>
+                            </div>
+                            <Box sx={{ ml: 3, mt: 2 }}>
+                                <img src={imgUrl} style={{ width: 400, height: 400 }} alt='' />
+                            </Box>
+                        </div>
+
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 4 }}>Login</Button>
+                    </Container>
+                </form>
+            </div>
         </>
     );
 };

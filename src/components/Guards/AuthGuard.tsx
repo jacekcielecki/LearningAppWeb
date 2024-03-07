@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import UserService from '../../services/UserService';
 import UserContext from '../../contexts/UserContext';
 import Loading from '../Loading/Loading';
+import validToken from '../../services/token';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -24,19 +25,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     navigate('/login');
   }
 
-  const validateJwtToken = (jwtToken : string | null) => {
-    if(!!jwtToken){
-      const decodedToken = jwtDecode(jwtToken);
-      if(!!decodedToken.jti && !!decodedToken.exp){
-        const currentTime = Date.now() / 1000;
-        const tokenExpired = decodedToken.exp < currentTime;
-        return !tokenExpired;
-      }
-      return false;
-    }
-    return false;
-  }
-
   const refreshUserContext = async () => {
     const token = localStorage.getItem("token");
     if(!!token){
@@ -54,15 +42,12 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   const authorize = async () => {
-    const token = localStorage.getItem('token');
-    const isValidToken = validateJwtToken(token);
-
-    if(!isValidToken){
+    if(!validToken){
       navigateToLoginPage();
       return;
+    }else{
+      await refreshUserContext();
     }
-
-    await refreshUserContext();
   }
 
   useEffect(() => {

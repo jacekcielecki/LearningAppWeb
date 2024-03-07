@@ -1,5 +1,5 @@
-import { CreateUserRequest } from "../interfaces/Account/CreateUserRequest";
-import { LoginDto } from "../interfaces/Account/LoginDto";
+import CreateUserRequest from "../interfaces/Account/CreateUserRequest";
+import LoginDto from "../interfaces/Account/LoginDto";
 import http from "./http";
 
 const AccountService = {
