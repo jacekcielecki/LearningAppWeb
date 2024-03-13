@@ -14,33 +14,42 @@ const Answer = styled(Paper)(({}) => ({
   borderColor: grey[300],
   borderRadius: '8px',
   fontSize: '1rem',
-  fontWeight: '700',
+  fontWeight: '400',
   boxShadow: 'none'
 }));
 
 export default function RowAndColumnSpacing() {
   return (
-    <Box sx={{display: 'flex', justifyContent: 'center', marginTop: '120px'}}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '120px' }}>
         <Box sx={{ width: '80%', maxWidth: '1400px', display: 'flex', padding: '12px' }}>
             <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+
+                <Grid item xs={12}>
+                    <h2>Select the correct answer</h2> 
+                </Grid>
+
                 <Grid item xs={6}>
                     <Answer>
-                        1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                        <b>1. </b>
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                     </Answer>
                 </Grid>
                 <Grid item xs={6}>
                     <Answer>
-                        2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                        <b>2. </b>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                     </Answer>
                 </Grid>
                 <Grid item xs={6}>
                     <Answer>
-                        3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                        <b>3. </b>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                     </Answer>
                 </Grid>
                 <Grid item xs={6}>
                     <Answer>
-                        4. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                        <b>4. </b>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                     </Answer>
                 </Grid>
             </Grid>
