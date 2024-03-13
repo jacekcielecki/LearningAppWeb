@@ -5,5 +5,6 @@ export const routes = [
   ];
 
 export const authRoutes = [
-    '/dashboard'
+    '/dashboard',
+    '/quiz'
   ];
