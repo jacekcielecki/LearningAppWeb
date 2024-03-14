@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import grey from '@mui/material/colors/grey';
+import ProgressBar from './ProgressBar';
 
 const Answer = styled(Paper)(({}) => ({
   backgroundColor: '#fff',
@@ -23,6 +24,10 @@ export default function RowAndColumnSpacing() {
     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '120px' }}>
         <Box sx={{ width: '80%', maxWidth: '1400px', display: 'flex', padding: '12px' }}>
             <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+
+                <Grid item xs={12}>
+                    <ProgressBar questionsCount={11} currentQuestion={9} />
+                </Grid>
 
                 <Grid item xs={12}>
                     <h2>Select the correct answer</h2> 
