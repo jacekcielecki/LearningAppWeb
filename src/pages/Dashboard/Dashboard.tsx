@@ -17,8 +17,10 @@ import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import CreateQuestionModal from '../../components/Modals/CreateQuestionModal';
 import { PlayArrow } from '@mui/icons-material';
 import CategoryDto from '../../interfaces/Category/CategoryDto';
+import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
+    const navigate = useNavigate();
     const [snackbar, setSnackbar] = React.useState({visible: false, message: '', severity: 'success'});
     const [categories, setCategories] = useState<CategoryDto[] | null>(null);
     const [categoryId, setCategoryId] = useState<number>(0);
@@ -85,6 +87,10 @@ export const Dashboard = () => {
     const handleCreateQuestionModalCancel = () => {
         setCreateQuestionModalOpen(false);
     };
+
+    const startQuiz = (categoryId: number) => {
+        navigate(`/quiz/category/${categoryId}/level/1`);
+    };
     
     return (
         <>
@@ -137,7 +143,7 @@ export const Dashboard = () => {
 
                             <TableCell align="right">
                                 <Tooltip title="Start quiz" arrow placement="bottom">
-                                    <IconButton aria-label="start quiz">
+                                    <IconButton aria-label="start quiz" onClick={() => startQuiz(category.id)}>
                                         <PlayArrow />
                                     </IconButton>                        
                                 </Tooltip>

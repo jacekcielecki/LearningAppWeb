@@ -31,7 +31,7 @@ function App() {
                   <Route path='/login' element={<Login />}/>
                   <Route path='/register' element={<Register />}/>
                   <Route path='/dashboard' element={<Dashboard />}/>
-                  <Route path='/quiz' element={<Quiz />}/>
+                  <Route path='/quiz/category/:categoryId?/level/:level?' element={<Quiz />}/>
                   <Route path='/error' element={<Error />}/>
                   <Route path='*' element={<NotFound />} />
                 </Routes>
