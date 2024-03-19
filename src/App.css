@@ -97,3 +97,17 @@
   display: flex;
 }
 
+.selected-answer {
+  background-color: var(--lap-grey) !important;
+  outline: 1px solid black;
+}
+
+.correct-answer {
+  background-color: green !important;
+  outline: 1px solid darkgreen;
+}
+
+.wrong-answer {
+  background-color: red !important;
+  outline: 1px solid darkred;
+}

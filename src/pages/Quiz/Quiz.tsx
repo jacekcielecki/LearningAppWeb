@@ -11,6 +11,7 @@ import { Button, Divider, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CloseOutlined } from '@mui/icons-material';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
+import { EAnswerStyle } from '../../enum/EAnswerStyle';
 
 const Answer = styled(Paper)(({}) => ({
   backgroundColor: '#fff',
@@ -26,9 +27,23 @@ const Answer = styled(Paper)(({}) => ({
   boxShadow: 'none'
 }));
 
+type AnswersStyle = {
+    a: EAnswerStyle;
+    b: EAnswerStyle;
+    c: EAnswerStyle;
+    d: EAnswerStyle;
+ }
+
 const Quiz: FC = () => {
     const [questions, setQuestions] = useState<QuestionDto[] | null>(null);
     const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+    const [selectedAnswer, setSelectedAnswer] = useState<null | 'a' | 'b' | 'c' | 'd'>(null);
+    const [answerStyle, setAnswerStyle] = useState<AnswersStyle>({
+        a: EAnswerStyle.None,
+        b: EAnswerStyle.None,
+        c: EAnswerStyle.None,
+        d: EAnswerStyle.None,
+    });
 
     const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(false);
     const { categoryId } = useParams();
@@ -50,6 +65,26 @@ const Quiz: FC = () => {
     const handleQuit = () => {
         setConfirmationModalOpen(false);
         navigate('/dashboard');
+    };
+
+    const resetAnswerStyle = () => {
+        setAnswerStyle({
+            a: EAnswerStyle.None,
+            b: EAnswerStyle.None,
+            c: EAnswerStyle.None,
+            d: EAnswerStyle.None,
+        });
+    };
+
+    const selectAnswer = (answer: 'a' | 'b' | 'c' | 'd') => {
+        resetAnswerStyle();
+        setSelectedAnswer(answer);
+        setAnswerStyle((prev) => {
+            return {
+                ...prev,
+                [answer]: EAnswerStyle.SelectedAnswer,
+            };
+        });
     };
 
     const nextQuestion = () => {
@@ -95,25 +130,25 @@ const Quiz: FC = () => {
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Answer>
+                            <Answer onClick={() => selectAnswer("a")} className={answerStyle.a}>
                                 <b>1. </b>
                                 {questions?.[currentQuestion].a}
                             </Answer>
                         </Grid>
                         <Grid item xs={6}>
-                            <Answer>
+                            <Answer onClick={() => selectAnswer("b")} className={answerStyle.b}>
                                 <b>2. </b>
                                 {questions?.[currentQuestion].b}
                             </Answer>
                         </Grid>
                         <Grid item xs={6}>
-                            <Answer>
+                            <Answer onClick={() => selectAnswer("c")} className={answerStyle.c}>
                                 <b>3. </b>
                                 {questions?.[currentQuestion].c}
                             </Answer>
                         </Grid>
                         <Grid item xs={6}>
-                            <Answer>
+                            <Answer onClick={() => selectAnswer("d")} className={answerStyle.d}>
                                 <b>4. </b>
                                 {questions?.[currentQuestion].d}
                             </Answer>
@@ -125,7 +160,7 @@ const Quiz: FC = () => {
                                 <Button variant='contained' color='primary' disableElevation onClick={nextQuestion}>Next</Button>
                             </Box>
                         </Grid>
-                        
+
                     </Grid>
                 </Box>
             </Box>
