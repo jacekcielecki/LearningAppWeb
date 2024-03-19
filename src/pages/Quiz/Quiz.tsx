@@ -7,8 +7,10 @@ import ProgressBar from './ProgressBar';
 import { useEffect, useState, FC } from 'react';
 import QuestionDto from '../../interfaces/Question/QuestionDto';
 import QuestionService from '../../services/QuestionService';
-import { Button, Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
+import { CloseOutlined } from '@mui/icons-material';
+import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 
 const Answer = styled(Paper)(({}) => ({
   backgroundColor: '#fff',
@@ -28,6 +30,7 @@ const Quiz: FC = () => {
     const [questions, setQuestions] = useState<QuestionDto[] | null>(null);
     const [currentQuestion, setCurrentQuestion] = useState<number>(0);
 
+    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(false);
     const { categoryId } = useParams();
     const { level } = useParams();
     const navigate = useNavigate();
@@ -42,6 +45,11 @@ const Quiz: FC = () => {
                 }
             })
         }
+    };
+
+    const handleQuit = () => {
+        setConfirmationModalOpen(false);
+        navigate('/dashboard');
     };
 
     const nextQuestion = () => {
@@ -59,14 +67,27 @@ const Quiz: FC = () => {
 
   return (
     <>
+        <ConfirmationModal 
+            header='Are you sure you want to quit?'
+            content="Your progress won't be saved"
+            isOpen={confirmationModalOpen}
+            onDialogCancel={() => setConfirmationModalOpen(false)}
+            onDialogSubmit={handleQuit}
+        />
+        
         {(questions && questions.length > 0) && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '120px' }}>
-                <Box sx={{ width: '80%', maxWidth: '1400px', display: 'flex', padding: '12px' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '120px', marginBottom: '-60px' }}>
+                <Box sx={{ width: '80%', maxWidth: '1400px', display: 'flex', padding: '20px', backgroundColor: '#fafaff', borderRadius: "20px" }}>
                     <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
 
-                        <Grid item xs={12}>
-                            <ProgressBar questionsCount={questions?.length} currentQuestion={currentQuestion + 1} />
-                        </Grid>
+                            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Box sx={{ width: '99%' }}>
+                                    <ProgressBar questionsCount={questions?.length} currentQuestion={currentQuestion + 1} />
+                                </Box>
+                                <Box sx={{ marginTop: 1, marginLeft: 2 }}>
+                                    <CloseOutlined sx={{ cursor: 'pointer' }} onClick={() => setConfirmationModalOpen(true)} />
+                                </Box>
+                            </Grid>
 
                         <Grid item xs={12}>
                             <h2>Select the correct answer</h2>
@@ -98,11 +119,13 @@ const Quiz: FC = () => {
                             </Answer>
                         </Grid>
 
-                        <Grid item xs={12} mt={6}>
-                            <Box sx={{display: 'flex', justifyContent: 'end'}}>
+                        <Grid item xs={12} mt={3}>
+                            <Divider/>
+                            <Box mt={3} sx={{display: 'flex', justifyContent: 'end'}}>
                                 <Button variant='contained' color='primary' disableElevation onClick={nextQuestion}>Next</Button>
                             </Box>
                         </Grid>
+                        
                     </Grid>
                 </Box>
             </Box>

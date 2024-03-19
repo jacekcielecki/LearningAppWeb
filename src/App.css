@@ -33,7 +33,7 @@
   background-color: var(--lap-navy-blue-darken) !important;
 }
 
-.cookies-info{
+.cookies-info {
   font-size: 16px !important;
   padding: 18px !important;
   font-weight: 400;
@@ -96,3 +96,4 @@
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
   display: flex;
 }
+
