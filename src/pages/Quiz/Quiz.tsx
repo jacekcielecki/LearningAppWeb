@@ -36,6 +36,7 @@ type AnswersStyle = {
 
 const Quiz: FC = () => {
     const [questions, setQuestions] = useState<QuestionDto[] | null>(null);
+    const [answerChecked, setAnswerChecked] = useState<boolean>(false);
     const [currentQuestion, setCurrentQuestion] = useState<number>(0);
     const [selectedAnswer, setSelectedAnswer] = useState<null | 'a' | 'b' | 'c' | 'd'>(null);
     const [answerStyle, setAnswerStyle] = useState<AnswersStyle>({
@@ -93,7 +94,7 @@ const Quiz: FC = () => {
         });
     };
 
-    const nextQuestion = () => {
+    const showNextQuestion = () => {
         if (currentQuestion < (questions?.length ?? 0) - 1) {
             setCurrentQuestion(currentQuestion + 1);
         } else {
@@ -101,6 +102,35 @@ const Quiz: FC = () => {
         }
         resetAnswerStyle();
         setSelectedAnswer(null);
+        setAnswerChecked(false);
+    };
+
+    const handleNext = () => {
+        if (answerChecked) {
+            showNextQuestion();
+        } else {
+            checkAnswer();
+            setAnswerChecked(true);
+        }
+    };
+
+    const checkAnswer = () => {
+        if (selectedAnswer === questions?.[currentQuestion].correctAnswer) {
+            setAnswerStyle((prev) => {
+                return {
+                    ...prev,
+                    [selectedAnswer as 'a' | 'b' | 'c' | 'd']: EAnswerStyle.CorrectAnswer,
+                };
+            });
+        } else {
+            setAnswerStyle((prev) => {
+                return {
+                    ...prev,
+                    [selectedAnswer as 'a' | 'b' | 'c' | 'd']: EAnswerStyle.WrongAnswer,
+                    [questions?.[currentQuestion].correctAnswer as 'a' | 'b' | 'c' | 'd']: EAnswerStyle.CorrectAnswer,
+                };
+            });
+        }
     };
 
     useEffect(() => {
@@ -164,7 +194,7 @@ const Quiz: FC = () => {
                         <Grid item xs={12} mt={3}>
                             <Divider/>
                             <Box mt={3} sx={{display: 'flex', justifyContent: 'end'}}>
-                                <Button disabled={selectedAnswer === null} variant='contained' color='primary' disableElevation onClick={nextQuestion}>
+                                <Button disabled={selectedAnswer === null} variant='contained' color='primary' disableElevation onClick={handleNext}>
                                     Next
                                 </Button>
                             </Box>

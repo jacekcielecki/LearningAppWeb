@@ -103,11 +103,11 @@
 }
 
 .correct-answer {
-  background-color: green !important;
-  outline: 1px solid darkgreen;
+  background-color: #ccffcc !important;
+  outline: 1px solid green;
 }
 
 .wrong-answer {
-  background-color: red !important;
-  outline: 1px solid darkred;
+  background-color: #ffcccc	 !important;
+  outline: 1px solid red;
 }
