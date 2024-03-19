@@ -1,4 +1,4 @@
-import { UserDto } from "../interfaces/User/UserDto";
+import UserDto from "../interfaces/User/UserDto";
 import http from "./http";
 
 const UserService = {

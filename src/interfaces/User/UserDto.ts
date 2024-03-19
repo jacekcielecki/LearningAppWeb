@@ -1,6 +1,6 @@
 import RoleDto from "./RoleDto";
 
-export interface UserDto {
+interface UserDto {
     id: number;
     username: string;
     emailAddress: string;

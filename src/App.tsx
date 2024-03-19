@@ -5,7 +5,6 @@ import Login from './pages/Login/Login';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { useState } from 'react';
 import UserContext from './contexts/UserContext';
-import { UserDto } from './interfaces/User/UserDto';
 import { ThemeContext } from '@emotion/react';
 import LearningAppTheme from './theme';
 import { CookiesProvider } from 'react-cookie';
@@ -15,6 +14,7 @@ import AuthGuard from './components/Guards/AuthGuard';
 import Layout from './components/Layout/Layout';
 import Register from './pages/Register/Register';
 import Quiz from './pages/Quiz/Quiz';
+import UserDto from './interfaces/User/UserDto';
 
 function App() {
   const [user, setUser] = useState<UserDto | null>(null);

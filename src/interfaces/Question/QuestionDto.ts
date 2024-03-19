@@ -1,4 +1,4 @@
-import { UserDto } from "../User/UserDto";
+import UserDto from "../User/UserDto";
 
 interface QuestionDto {
   id: number;

@@ -12,6 +12,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CloseOutlined } from '@mui/icons-material';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { EAnswerStyle } from '../../enum/EAnswerStyle';
+import UserProgressService from '../../services/UserProgressService';
+import { EQuizDifficultyLevel } from '../../enum/EQuizDifficultyLevel';
 
 const Answer = styled(Paper)(({}) => ({
   backgroundColor: '#fff',
@@ -78,6 +80,8 @@ const Quiz: FC = () => {
     };
 
     const selectAnswer = (answer: 'a' | 'b' | 'c' | 'd') => {
+        if (answerChecked) return;
+
         resetAnswerStyle();
 
         if (selectedAnswer === answer) {
@@ -94,11 +98,26 @@ const Quiz: FC = () => {
         });
     };
 
+    const completeQuiz = () => {
+        if (!categoryId || !level) return;
+
+        const category = parseInt(categoryId);
+        const expGained = 5; //TODO: calculate exp gained based on quiz difficulty level and correct answered
+        const lvl = EQuizDifficultyLevel.get(parseInt(level))
+
+        if (!lvl) return;
+
+        UserProgressService.CompleteQuiz(category, lvl, expGained).then((response) => {
+            alert('Quiz completed');
+            console.log(response.data);
+        });
+    };
+
     const showNextQuestion = () => {
         if (currentQuestion < (questions?.length ?? 0) - 1) {
             setCurrentQuestion(currentQuestion + 1);
         } else {
-            alert('Quiz finished');
+            completeQuiz();
         }
         resetAnswerStyle();
         setSelectedAnswer(null);
