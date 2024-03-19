@@ -78,6 +78,12 @@ const Quiz: FC = () => {
 
     const selectAnswer = (answer: 'a' | 'b' | 'c' | 'd') => {
         resetAnswerStyle();
+
+        if (selectedAnswer === answer) {
+            setSelectedAnswer(null);
+            return;
+        }
+
         setSelectedAnswer(answer);
         setAnswerStyle((prev) => {
             return {
@@ -88,12 +94,13 @@ const Quiz: FC = () => {
     };
 
     const nextQuestion = () => {
-        if (questions === null) return;
-        if (currentQuestion < questions.length - 1) {
+        if (currentQuestion < (questions?.length ?? 0) - 1) {
             setCurrentQuestion(currentQuestion + 1);
         } else {
             alert('Quiz finished');
         }
+        resetAnswerStyle();
+        setSelectedAnswer(null);
     };
 
     useEffect(() => {
@@ -157,7 +164,9 @@ const Quiz: FC = () => {
                         <Grid item xs={12} mt={3}>
                             <Divider/>
                             <Box mt={3} sx={{display: 'flex', justifyContent: 'end'}}>
-                                <Button variant='contained' color='primary' disableElevation onClick={nextQuestion}>Next</Button>
+                                <Button disabled={selectedAnswer === null} variant='contained' color='primary' disableElevation onClick={nextQuestion}>
+                                    Next
+                                </Button>
                             </Box>
                         </Grid>
 
