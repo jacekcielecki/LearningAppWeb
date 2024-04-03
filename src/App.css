@@ -33,7 +33,7 @@
   background-color: var(--lap-navy-blue-darken) !important;
 }
 
-.cookies-info{
+.cookies-info {
   font-size: 16px !important;
   padding: 18px !important;
   font-weight: 400;
@@ -89,3 +89,25 @@
   display: flex;
 }
 
+.quiz-content {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+  display: flex;
+}
+
+.selected-answer {
+  background-color: var(--lap-grey) !important;
+  outline: 1px solid black;
+}
+
+.correct-answer {
+  background-color: #ccffcc !important;
+  outline: 1px solid green;
+}
+
+.wrong-answer {
+  background-color: #ffcccc	 !important;
+  outline: 1px solid red;
+}

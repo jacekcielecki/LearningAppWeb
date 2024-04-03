@@ -1,5 +1,5 @@
 import QuestionDto from "../Question/QuestionDto";
-import { UserDto } from "../User/UserDto";
+import UserDto from "../User/UserDto";
 
 interface CategoryDto {
   id: number;

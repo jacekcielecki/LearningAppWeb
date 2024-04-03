@@ -8,7 +8,9 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
       <main style={{ flex: 1 }}>
-        <Box sx={{ my: 12, mx: 12 }}>{children}</Box>
+        <Box sx={{ my: 12, mx: 12 }}>
+          {children}
+        </Box>
       </main>
       <Footer/>
     </div>
